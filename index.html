@@ -15,7 +15,53 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
+  <header class="top wrap">
+    <a class="wordmark" href="#main">Teaspoon</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#build">Build a drink</a></li>
+        <li><a href="#visit">Visit</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero__copy">
+        <h1 id="hero-title">Tea first.<br>Pearls always.</h1>
+        <p class="lede">Brewed-to-order milk teas, fruit teas, and chewy pearls, poured for San Jose. Pick a drink or build your own down to the last pearl.</p>
+        <div class="hero__actions">
+          <a class="btn" href="#build">Build your drink</a>
+          <a class="btn btn--quiet" href="#menu">See the menu</a>
+        </div>
+      </div>
+      <figure class="hero__cup">
+        <svg viewBox="0 0 220 300" role="img" aria-labelledby="hero-cup-title">
+          <title id="hero-cup-title">Illustration of a milk tea with tapioca pearls and a wide straw</title>
+          <defs>
+            <clipPath id="hero-clip"><path d="M34 60 H186 L166 286 H54 Z"/></clipPath>
+          </defs>
+          <rect class="straw" x="118" y="4" width="18" height="230" rx="9" transform="rotate(12 127 120)"/>
+          <g clip-path="url(#hero-clip)">
+            <rect class="cup-fill" x="0" y="60" width="220" height="240" fill="var(--cup)"/>
+            <g class="pour">
+              <rect x="0" y="96" width="220" height="200" fill="#c79a6c"/>
+              <path d="M0 104 Q55 90 110 104 T220 104 V120 H0Z" fill="#e7c9a0" opacity=".7"/>
+            </g>
+            <g class="pearls" fill="var(--pearl)">
+              <circle cx="66" cy="272" r="11"/><circle cx="90" cy="276" r="11"/><circle cx="114" cy="274" r="11"/>
+              <circle cx="138" cy="276" r="11"/><circle cx="158" cy="270" r="10"/><circle cx="78" cy="252" r="11"/>
+              <circle cx="102" cy="254" r="11"/><circle cx="126" cy="252" r="11"/><circle cx="150" cy="250" r="10"/>
+              <circle cx="90" cy="232" r="10"/><circle cx="116" cy="232" r="11"/><circle cx="140" cy="230" r="10"/>
+            </g>
+          </g>
+          <path class="cup-line" d="M34 60 H186 L166 286 H54 Z" fill="none"/>
+          <path class="cup-line" d="M28 60 H192" />
+        </svg>
+      </figure>
+    </section>
   </main>
 
   <script type="module" src="app.js"></script>
