@@ -154,3 +154,34 @@ a { color: var(--accent); text-underline-offset: .2em; }
 .board svg { width: 56px; height: 72px; }
 .board .tag { font-size: .875rem; font-weight: 700; color: var(--accent); }
 @media (max-width: 760px) { .menu__head { grid-template-columns: 1fr; } }
+
+/* Builder */
+.build__grid { display: grid; grid-template-columns: 1.1fr .9fr; grid-template-areas: "intro preview" "form preview"; gap: 1.5rem var(--gutter); align-items: start; }
+.build__intro { grid-area: intro; }
+.builder { grid-area: form; display: grid; gap: 1.75rem; }
+.preview { grid-area: preview; position: sticky; top: 24px; background: var(--surface); border: 3px solid var(--line); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: 8px 8px 0 var(--mango); }
+.preview__cup svg { width: min(100%, 240px); margin-inline: auto; }
+.preview__summary { display: block; margin-top: 1rem; font-size: var(--step-0); }
+.preview__summary strong { font-family: var(--font-display); font-size: var(--step-1); display: block; margin-bottom: .25em; }
+
+.builder fieldset { border: 0; margin: 0; padding: 0; }
+.builder legend { font: 700 var(--step-1)/1.2 var(--font-display); margin-bottom: .6rem; padding: 0; }
+.options { display: flex; flex-wrap: wrap; gap: .5rem; }
+.opt { position: relative; }
+.opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.opt span {
+  display: inline-flex; align-items: center; gap: .5em;
+  padding: .65em 1.05em; border: 2px solid var(--line); border-radius: var(--radius-pill);
+  font-weight: 700; background: var(--bg); min-height: 44px;
+}
+.opt .swatch { width: 1em; height: 1em; border-radius: 50%; border: 2px solid var(--line); }
+.opt input:checked + span { background: var(--accent); color: var(--accent-ink); }
+.opt input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 3px; }
+.opt input:hover:not(:checked) + span { background: var(--surface); }
+.builder .hint { font-size: 1rem; color: var(--ink-soft); margin: .5rem 0 0; }
+
+@media (max-width: 860px) {
+  .build__grid { grid-template-columns: 1fr; grid-template-areas: "intro" "preview" "form"; }
+  .preview { position: static; display: grid; grid-template-columns: 120px 1fr; gap: 1rem; align-items: center; }
+  .preview__summary { margin: 0; }
+}
