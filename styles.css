@@ -185,3 +185,11 @@ a { color: var(--accent); text-underline-offset: .2em; }
   .preview { position: static; display: grid; grid-template-columns: 120px 1fr; gap: 1rem; align-items: center; }
   .preview__summary { margin: 0; }
 }
+
+/* About */
+.about { background: var(--accent); color: var(--accent-ink); }
+.about__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: var(--gutter); }
+.about h2 { font-size: var(--step-4); line-height: .95; }
+.about__big { font: 500 var(--step-2)/1.3 var(--font-display); max-width: 30ch; }
+.about a { color: inherit; }
+@media (max-width: 760px) { .about__grid { grid-template-columns: 1fr; } }
