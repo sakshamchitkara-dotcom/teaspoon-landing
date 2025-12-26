@@ -82,5 +82,13 @@ function builder() {
   render();
 }
 
+// Shop facts from the single config object
+function shopFacts() {
+  document.querySelectorAll("[data-shop]").forEach((el) => { el.textContent = SHOP[el.dataset.shop]; });
+  $("#map-link").href = SHOP.mapUrl;
+  $("#hours").innerHTML = SHOP.hours.map((h) => `<tr><th scope="row">${esc(h.days)}</th><td>${esc(h.time)}</td></tr>`).join("");
+}
+
 menu();
 builder();
+shopFacts();
