@@ -82,6 +82,20 @@ function builder() {
   render();
 }
 
+// Gallery: illustrated "posts", no photos
+function gallery() {
+  const posts = [
+    { bg: "var(--mango)", alt: "Taro milk tea with pearls on a mango-yellow background", art: cup({ tea: "#b9a3d6", bits: ["#3b2417"], ice: 1 }) },
+    { bg: "var(--pearl)", alt: "A close-up pile of glossy tapioca pearls", cls: "tile--pearls" },
+    { bg: "#cfe0b4", alt: "Strawberry matcha latte in pink and green layers", art: cup({ tea: "#8fae5a", milk: "#f0a3a8" }) },
+    { bg: "var(--surface)", alt: "Text post that reads: less ice, more tea", text: "less ice,<br>more tea" },
+    { bg: "var(--accent)", alt: "Mango green tea with crystal boba on a purple background", art: cup({ tea: "#f2b54a", bits: ["#e9e6de"], ice: 2 }) },
+    { bg: "#e7c9a0", alt: "Brown sugar pearl milk with dark syrup streaks", art: cup({ tea: "#f2e6d4", milk: "#7a4a24", bits: ["#3b2417", "#3b2417"] }) },
+  ];
+  $("#feed").innerHTML = posts.map((p) => `<li class="tile ${p.cls || ""}" style="--tile:${p.bg}" role="img" aria-label="${esc(p.alt)}">
+    ${p.art || ""}${p.text ? `<span class="tile__text" aria-hidden="true">${p.text}</span>` : ""}</li>`).join("");
+}
+
 // Shop facts from the single config object
 function shopFacts() {
   document.querySelectorAll("[data-shop]").forEach((el) => { el.textContent = SHOP[el.dataset.shop]; });
@@ -91,4 +105,5 @@ function shopFacts() {
 
 menu();
 builder();
+gallery();
 shopFacts();
