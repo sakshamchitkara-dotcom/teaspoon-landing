@@ -230,3 +230,13 @@ a { color: var(--accent); text-underline-offset: .2em; }
 .faq details[open] summary::after { background: var(--mango); transform: scale(1.25); }
 .faq details p { color: var(--ink-soft); padding-bottom: 1rem; }
 @media (max-width: 760px) { .faq__grid { grid-template-columns: 1fr; } }
+
+/* Footer */
+.foot { background: var(--ink); color: var(--bg); padding-block: 56px; }
+.foot a { color: var(--bg); }
+.foot__grid { display: grid; grid-template-columns: auto 1fr; gap: 2rem 4rem; align-items: start; }
+.foot__mark { font: 700 var(--step-3)/1 var(--font-display); margin: 0; }
+.foot__mark span { font: 400 var(--step-0)/1.4 var(--font-body); }
+.foot ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font-weight: 700; }
+.foot__note { grid-column: 1 / -1; margin: 0; font-size: 1rem; opacity: .85; max-width: 70ch; }
+@media (max-width: 560px) { .foot__grid { grid-template-columns: 1fr; } }
