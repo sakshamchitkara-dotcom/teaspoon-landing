@@ -103,6 +103,21 @@ function shopFacts() {
   $("#hours").innerHTML = SHOP.hours.map((h) => `<tr><th scope="row">${esc(h.days)}</th><td>${esc(h.time)}</td></tr>`).join("");
 }
 
+// Theme toggle: follows the OS until the visitor picks one
+function theme() {
+  const btn = $("#theme"), root = document.documentElement;
+  const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const sync = () => btn.setAttribute("aria-pressed", isDark());
+  btn.addEventListener("click", () => {
+    root.dataset.theme = isDark() ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+    sync();
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", sync);
+  sync();
+}
+
+theme();
 menu();
 builder();
 gallery();
