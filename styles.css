@@ -251,3 +251,9 @@ a { color: var(--accent); text-underline-offset: .2em; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+@media (max-width: 760px) {
+  .top nav { order: 3; width: 100%; }
+  .top ul { justify-content: space-between; }
+  .hero__cup { width: min(52%, 220px); }
+}
