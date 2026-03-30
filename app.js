@@ -1,8 +1,17 @@
-// Teaspoon concept page. All content comes from data.js.
+// Teaspoon concept page. Facts come from data.js, words from i18n.js.
 import { SHOP, CATEGORIES, MENU, BUILDER } from "./data.js";
+import { STRINGS } from "./i18n.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+let lang = "en";
+const lookup = (obj, key) => key.split(".").reduce((o, k) => o?.[k], obj);
+// t("menu.showing", { n: 3 }) -> "Showing 3 items"; falls back to English, then the key.
+export function t(key, vars = {}) {
+  const s = lookup(STRINGS[lang], key) ?? lookup(STRINGS.en, key) ?? key;
+  return typeof s === "string" ? s.replace(/\{(\w+)\}/g, (m, k) => vars[k] ?? m) : s;
+}
 
 // One cup drawing, reused by the menu board and the builder.
 // fill: 0..1 how full; ice: 0..2 cubes level; bits: array of topping colors.
@@ -29,70 +38,87 @@ export function cup({ tea, milk, fill = 0.8, ice = 0, bits = [], sweet = null })
   </svg>`;
 }
 
-// Menu board with category filter
-function menu() {
-  const filters = $(".filters"), board = $(".board"), status = $("#menu-status");
-  if (!board) return;
-  const label = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.label]));
-  filters.innerHTML = CATEGORIES.map((c, i) =>
-    `<button type="button" class="chip" data-cat="${c.id}" aria-pressed="${i === 0}">${esc(c.label)}</button>`).join("");
-  const show = (cat) => {
-    const items = MENU.filter((d) => cat === "all" || d.cat === cat);
-    board.innerHTML = items.map((d) => `<li>
-      ${cup(d.cat === "topping" ? { tea: "var(--cup)", bits: [d.tea, d.tea], fill: 0 } : d)}
-      <div><h3>${esc(d.name)}</h3><p>${esc(d.note)}</p>${cat === "all" ? `<span class="tag">${esc(label[d.cat])}</span>` : ""}</div>
-    </li>`).join("");
-    status.textContent = `Showing ${items.length} ${cat === "all" ? "items" : label[cat].toLowerCase() + " items"}`;
-    filters.querySelectorAll(".chip").forEach((b) => b.setAttribute("aria-pressed", b.dataset.cat === cat));
-  };
-  filters.addEventListener("click", (e) => { const b = e.target.closest(".chip"); if (b) show(b.dataset.cat); });
-  show("all");
+// Static copy in index.html, tagged with data-i18n (text), data-i18n-html (our own markup), data-i18n-label (aria-label)
+function staticText() {
+  const vars = { handle: SHOP.instagram };
+  document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n, vars); });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml, vars); });
+  document.querySelectorAll("[data-i18n-label]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nLabel)); });
+  document.title = t("meta.title");
+  $('meta[name="description"]').content = t("meta.description");
 }
+
+// Menu board with category filter
+let menuCat = "all";
+function showMenu(cat = menuCat) {
+  const filters = $(".filters"), board = $(".board");
+  menuCat = cat;
+  const items = MENU.filter((d) => cat === "all" || d.cat === cat);
+  board.innerHTML = items.map((d) => {
+    const [name, note] = t(`menu.items.${d.id}`);
+    return `<li>
+      ${cup(d.cat === "topping" ? { tea: "var(--cup)", bits: [d.tea, d.tea], fill: 0 } : d)}
+      <div><h3>${esc(name)}</h3><p>${esc(note)}</p>${cat === "all" ? `<span class="tag">${esc(t(`menu.cats.${d.cat}`))}</span>` : ""}</div>
+    </li>`;
+  }).join("");
+  $("#menu-status").textContent = cat === "all" ? t("menu.showing", { n: items.length }) : t("menu.showingCat", { n: items.length, cat: t(`menu.cats.${cat}`) });
+  filters.querySelectorAll(".chip").forEach((b) => b.setAttribute("aria-pressed", b.dataset.cat === cat));
+}
+function menu() {
+  const filters = $(".filters");
+  filters.innerHTML = CATEGORIES.map((c) =>
+    `<button type="button" class="chip" data-cat="${c}" aria-pressed="${c === menuCat}">${esc(t(`menu.cats.${c}`))}</button>`).join("");
+  showMenu();
+}
+$(".filters").addEventListener("click", (e) => { const b = e.target.closest(".chip"); if (b) showMenu(b.dataset.cat); });
 
 // Build-your-drink: form state -> live cup + summary
 const MAX_TOPPINGS = 3;
-function builder() {
-  const form = $("#builder");
-  if (!form) return;
+const form = $("#builder");
+const DEFAULT_DRINK = { base: "black", sweet: 50, ice: 1, top: ["pearls"] };
+function readDrink() {
+  const f = new FormData(form);
+  return { base: f.get("base"), sweet: Number(f.get("sweet")), ice: Number(f.get("ice")), top: f.getAll("top") };
+}
+function builder(drink = form.elements.length ? readDrink() : DEFAULT_DRINK) {
   const opt = (type, name, value, text, checked, swatch) => `<label class="opt">
     <input type="${type}" name="${name}" value="${esc(value)}"${checked ? " checked" : ""}>
     <span>${swatch ? `<i class="swatch" style="background:${swatch}" aria-hidden="true"></i>` : ""}${esc(text)}</span></label>`;
   const group = (legend, body, hint = "") =>
-    `<fieldset><legend>${legend}</legend><div class="options">${body}</div>${hint}</fieldset>`;
+    `<fieldset><legend>${esc(legend)}</legend><div class="options">${body}</div>${hint}</fieldset>`;
   form.innerHTML =
-    group("Base", BUILDER.bases.map((b, i) => opt("radio", "base", b.id, b.label, i === 0, b.tea)).join("")) +
-    group("Sweetness", BUILDER.sweetness.map((v) => opt("radio", "sweet", v, `${v}%`, v === 50)).join("")) +
-    group("Ice", BUILDER.ice.map((v, i) => opt("radio", "ice", i, v, i === 1)).join("")) +
-    group("Toppings", BUILDER.toppings.map((t) => opt("checkbox", "top", t.id, t.label, t.id === "pearls", t.color)).join(""),
-      `<p class="hint" id="top-hint">Up to ${MAX_TOPPINGS}.</p>`);
-
-  const render = () => {
-    const f = new FormData(form);
-    const base = BUILDER.bases.find((b) => b.id === f.get("base"));
-    const sweet = Number(f.get("sweet"));
-    const ice = Number(f.get("ice"));
-    const tops = BUILDER.toppings.filter((t) => f.getAll("top").includes(t.id));
-    form.querySelectorAll('input[name="top"]').forEach((i) => { i.disabled = !i.checked && tops.length >= MAX_TOPPINGS; });
-    $("#preview-cup").innerHTML = cup({ tea: base.tea, ice, sweet, bits: tops.map((t) => t.color), fill: 0.82 });
-    const list = tops.map((t) => t.label.toLowerCase());
-    const withText = list.length ? `with ${list.length > 1 ? list.slice(0, -1).join(", ") + " and " + list.at(-1) : list[0]}` : "no toppings";
-    $("#summary").innerHTML = `<strong>${esc(base.label)}</strong> ${sweet}% sweet, ${BUILDER.ice[ice].toLowerCase()}, ${esc(withText)}.`;
-  };
-  form.addEventListener("change", render);
-  render();
+    group(t("build.base"), BUILDER.bases.map((b) => opt("radio", "base", b.id, t(`build.bases.${b.id}`), b.id === drink.base, b.tea)).join("")) +
+    group(t("build.sweet"), BUILDER.sweetness.map((v) => opt("radio", "sweet", v, `${v}%`, v === drink.sweet)).join("")) +
+    group(t("build.ice"), BUILDER.ice.map((v) => opt("radio", "ice", v, t(`build.iceLevels.${v}`), v === drink.ice)).join("")) +
+    group(t("build.toppings"), BUILDER.toppings.map((tp) => opt("checkbox", "top", tp.id, t(`build.tops.${tp.id}`), drink.top.includes(tp.id), tp.color)).join(""),
+      `<p class="hint" id="top-hint">${esc(t("build.hint", { n: MAX_TOPPINGS }))}</p>`);
+  renderDrink();
 }
+function renderDrink() {
+  const d = readDrink();
+  const base = BUILDER.bases.find((b) => b.id === d.base);
+  const tops = BUILDER.toppings.filter((tp) => d.top.includes(tp.id));
+  form.querySelectorAll('input[name="top"]').forEach((i) => { i.disabled = !i.checked && tops.length >= MAX_TOPPINGS; });
+  $("#preview-cup").innerHTML = cup({ tea: base.tea, ice: d.ice, sweet: d.sweet, bits: tops.map((tp) => tp.color), fill: 0.82 });
+  const lower = (s) => s.toLocaleLowerCase(lang);
+  const list = tops.map((tp) => lower(t(`build.tops.${tp.id}`)));
+  const joined = list.length > 1 ? `${list.slice(0, -1).join(", ")} ${t("build.and")} ${list.at(-1)}` : list[0];
+  const text = t("build.summary", { sweet: d.sweet, ice: lower(t(`build.iceLevels.${d.ice}`)), tops: list.length ? t("build.with", { list: joined }) : t("build.none") });
+  $("#summary").innerHTML = `<strong>${esc(t(`build.bases.${base.id}`))}</strong> ${esc(text)}`;
+}
+form.addEventListener("change", renderDrink);
 
 // Gallery: illustrated "posts", no photos
 function gallery() {
   const posts = [
-    { bg: "var(--mango)", alt: "Taro milk tea with pearls on a mango-yellow background", art: cup({ tea: "#b9a3d6", bits: ["#3b2417"], ice: 1 }) },
-    { bg: "var(--pearl)", alt: "A close-up pile of glossy tapioca pearls", cls: "tile--pearls" },
-    { bg: "#cfe0b4", alt: "Strawberry matcha latte in pink and green layers", art: cup({ tea: "#8fae5a", milk: "#f0a3a8" }) },
-    { bg: "var(--surface)", alt: "Text post that reads: less ice, more tea", text: "less ice,<br>more tea" },
-    { bg: "var(--accent)", alt: "Mango green tea with crystal boba on a purple background", art: cup({ tea: "#f2b54a", bits: ["#e9e6de"], ice: 2 }) },
-    { bg: "#e7c9a0", alt: "Brown sugar pearl milk with dark syrup streaks", art: cup({ tea: "#f2e6d4", milk: "#7a4a24", bits: ["#3b2417", "#3b2417"] }) },
+    { bg: "var(--mango)", art: cup({ tea: "#b9a3d6", bits: ["#3b2417"], ice: 1 }) },
+    { bg: "var(--pearl)", cls: "tile--pearls" },
+    { bg: "#cfe0b4", art: cup({ tea: "#8fae5a", milk: "#f0a3a8" }) },
+    { bg: "var(--surface)", text: t("gallery.text") },
+    { bg: "var(--accent)", art: cup({ tea: "#f2b54a", bits: ["#e9e6de"], ice: 2 }) },
+    { bg: "#e7c9a0", art: cup({ tea: "#f2e6d4", milk: "#7a4a24", bits: ["#3b2417", "#3b2417"] }) },
   ];
-  $("#feed").innerHTML = posts.map((p) => `<li><div class="tile ${p.cls || ""}" style="--tile:${p.bg}" role="img" aria-label="${esc(p.alt)}">
+  $("#feed").innerHTML = posts.map((p, i) => `<li><div class="tile ${p.cls || ""}" style="--tile:${p.bg}" role="img" aria-label="${esc(t(`gallery.posts.${i}`))}">
     ${p.art || ""}${p.text ? `<span class="tile__text" aria-hidden="true">${p.text}</span>` : ""}</div></li>`).join("");
 }
 
@@ -100,7 +126,7 @@ function gallery() {
 function shopFacts() {
   document.querySelectorAll("[data-shop]").forEach((el) => { el.textContent = SHOP[el.dataset.shop]; });
   $("#map-link").href = SHOP.mapUrl;
-  $("#hours").innerHTML = SHOP.hours.map((h) => `<tr><th scope="row">${esc(h.days)}</th><td>${esc(h.time)}</td></tr>`).join("");
+  $("#hours").innerHTML = SHOP.hours.map((h) => `<tr><th scope="row">${esc(t(`visit.days.${h.days}`))}</th><td>${esc(h.time)}</td></tr>`).join("");
 }
 
 // Theme toggle: follows the OS until the visitor picks one
@@ -117,8 +143,14 @@ function theme() {
   sync();
 }
 
+// Everything that holds words; rerun when the language changes.
+function render() {
+  staticText();
+  menu();
+  builder();
+  gallery();
+  shopFacts();
+}
+
 theme();
-menu();
-builder();
-gallery();
-shopFacts();
+render();

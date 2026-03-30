@@ -14,34 +14,34 @@
   <script>try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 
   <header class="top wrap">
     <a class="wordmark" href="#main">Teaspoon</a>
-    <nav aria-label="Sections">
+    <nav aria-label="Sections" data-i18n-label="nav.label">
       <ul>
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#build">Build a drink</a></li>
-        <li><a href="#visit">Visit</a></li>
-        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#menu" data-i18n="nav.menu">Menu</a></li>
+        <li><a href="#build" data-i18n="nav.build">Build a drink</a></li>
+        <li><a href="#visit" data-i18n="nav.visit">Visit</a></li>
+        <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
       </ul>
     </nav>
-    <button class="theme" type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button class="theme" type="button" id="theme" aria-pressed="false" data-i18n="theme">Dark mode</button>
   </header>
 
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero__copy">
-        <h1 id="hero-title">Tea first.<br>Pearls always.</h1>
-        <p class="lede">Brewed-to-order milk teas, fruit teas, and chewy pearls, poured for San Jose. Pick a drink or build your own down to the last pearl.</p>
+        <h1 id="hero-title" data-i18n-html="hero.title">Tea first.<br>Pearls always.</h1>
+        <p class="lede" data-i18n="hero.lede">Brewed-to-order milk teas, fruit teas, and chewy pearls, poured for San Jose. Pick a drink or build your own down to the last pearl.</p>
         <div class="hero__actions">
-          <a class="btn" href="#build">Build your drink</a>
-          <a class="btn btn--quiet" href="#menu">See the menu</a>
+          <a class="btn" href="#build" data-i18n="hero.build">Build your drink</a>
+          <a class="btn btn--quiet" href="#menu" data-i18n="hero.menu">See the menu</a>
         </div>
       </div>
       <figure class="hero__cup">
         <svg viewBox="0 0 220 300" role="img" aria-labelledby="hero-cup-title">
-          <title id="hero-cup-title">Illustration of a milk tea with tapioca pearls and a wide straw</title>
+          <title id="hero-cup-title" data-i18n="hero.cup">Illustration of a milk tea with tapioca pearls and a wide straw</title>
           <defs>
             <clipPath id="hero-clip"><path d="M34 60 H186 L166 286 H54 Z"/></clipPath>
           </defs>
@@ -68,10 +68,10 @@
     <section id="menu" class="section menu" aria-labelledby="menu-title">
       <div class="wrap">
         <div class="menu__head">
-          <h2 id="menu-title">On the board</h2>
-          <p>A sample menu for this concept. Every drink can be adjusted for sugar and ice.</p>
+          <h2 id="menu-title" data-i18n="menu.title">On the board</h2>
+          <p data-i18n="menu.intro">A sample menu for this concept. Every drink can be adjusted for sugar and ice.</p>
         </div>
-        <div class="filters" role="group" aria-label="Filter menu by category"></div>
+        <div class="filters" role="group" aria-label="Filter menu by category" data-i18n-label="menu.filter"></div>
         <p class="visually-hidden" role="status" id="menu-status"></p>
         <ul class="board"></ul>
       </div>
@@ -80,8 +80,8 @@
     <section id="build" class="section build" aria-labelledby="build-title">
       <div class="wrap build__grid">
         <div class="build__intro">
-          <h2 id="build-title">Build your drink</h2>
-          <p>Choose a base, then set sugar, ice, and toppings. The cup updates as you go, so you know what to ask for at the counter.</p>
+          <h2 id="build-title" data-i18n="build.title">Build your drink</h2>
+          <p data-i18n="build.intro">Choose a base, then set sugar, ice, and toppings. The cup updates as you go, so you know what to ask for at the counter.</p>
         </div>
         <form class="builder" id="builder">
           <!-- fieldsets are generated from BUILDER in data.js -->
@@ -95,19 +95,19 @@
 
     <section id="about" class="section about" aria-labelledby="about-title">
       <div class="wrap about__grid">
-        <h2 id="about-title">A South Bay tea break</h2>
+        <h2 id="about-title" data-i18n="about.title">A South Bay tea break</h2>
         <div class="about__body">
-          <p class="about__big">San Jose runs on long commutes, late study sessions, and weekend errands. A good cup of tea should fit into all of them.</p>
-          <p>This valley used to be orchards before it was chips, and it still rewards things grown and made with care. We brew tea in small batches through the day, cook pearls often so they stay soft, and let you set the sugar yourself.</p>
-          <p>Stop in on the way to class, after a shift, or with the whole group chat. Stay as long as you like.</p>
+          <p class="about__big" data-i18n="about.big">San Jose runs on long commutes, late study sessions, and weekend errands. A good cup of tea should fit into all of them.</p>
+          <p data-i18n="about.p1">This valley used to be orchards before it was chips, and it still rewards things grown and made with care. We brew tea in small batches through the day, cook pearls often so they stay soft, and let you set the sugar yourself.</p>
+          <p data-i18n="about.p2">Stop in on the way to class, after a shift, or with the whole group chat. Stay as long as you like.</p>
         </div>
       </div>
     </section>
 
     <section id="gallery" class="section gallery" aria-labelledby="gallery-title">
       <div class="wrap">
-        <h2 id="gallery-title">From the feed</h2>
-        <p>Illustrated posts in the style of our social feed. Follow along at <span data-shop="instagram">[instagram handle]</span>.</p>
+        <h2 id="gallery-title" data-i18n="gallery.title">From the feed</h2>
+        <p data-i18n="gallery.intro">Illustrated posts in the style of our social feed. Follow along at [instagram handle].</p>
         <ul class="feed" id="feed"></ul>
       </div>
     </section>
@@ -115,41 +115,41 @@
     <section id="visit" class="section visit" aria-labelledby="visit-title">
       <div class="wrap visit__grid">
         <div>
-          <h2 id="visit-title">Visit us in San Jose</h2>
-          <p>Address, phone, and hours below are placeholders for this concept. Check Google Maps for the current details.</p>
-          <a class="btn" id="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Teaspoon+San+Jose" target="_blank" rel="noopener">Find Teaspoon on Google Maps<span class="visually-hidden"> (opens in a new tab)</span></a>
+          <h2 id="visit-title" data-i18n="visit.title">Visit us in San Jose</h2>
+          <p data-i18n="visit.intro">Address, phone, and hours below are placeholders for this concept. Check Google Maps for the current details.</p>
+          <a class="btn" id="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Teaspoon+San+Jose" target="_blank" rel="noopener"><span data-i18n="visit.map">Find Teaspoon on Google Maps</span><span class="visually-hidden" data-i18n="visit.newTab"> (opens in a new tab)</span></a>
         </div>
         <dl class="facts">
-          <div><dt>Address</dt><dd data-shop="address">[address]</dd></div>
-          <div><dt>Phone</dt><dd data-shop="phone">[phone]</dd></div>
-          <div><dt>Hours</dt><dd><table class="hours"><caption class="visually-hidden">Opening hours</caption><tbody id="hours"></tbody></table></dd></div>
+          <div><dt data-i18n="visit.address">Address</dt><dd data-shop="address">[address]</dd></div>
+          <div><dt data-i18n="visit.phone">Phone</dt><dd data-shop="phone">[phone]</dd></div>
+          <div><dt data-i18n="visit.hours">Hours</dt><dd><table class="hours"><caption class="visually-hidden" data-i18n="visit.hoursCaption">Opening hours</caption><tbody id="hours"></tbody></table></dd></div>
         </dl>
       </div>
     </section>
 
     <section id="faq" class="section faq" aria-labelledby="faq-title">
       <div class="wrap faq__grid">
-        <h2 id="faq-title">Questions at the counter</h2>
+        <h2 id="faq-title" data-i18n="faq.title">Questions at the counter</h2>
         <div class="faq__list">
           <details>
-            <summary>How sweet is 50%?</summary>
-            <p>Half the syrup of a standard drink. If you usually find boba too sweet, start at 25% or 50% and adjust next time.</p>
+            <summary data-i18n="faq.items.0.0">How sweet is 50%?</summary>
+            <p data-i18n="faq.items.0.1">Half the syrup of a standard drink. If you usually find boba too sweet, start at 25% or 50% and adjust next time.</p>
           </details>
           <details>
-            <summary>Do the drinks have caffeine?</summary>
-            <p>Anything made with black, green, or oolong tea does. Brown sugar pearl milk has no tea, so it is a good late-night pick.</p>
+            <summary data-i18n="faq.items.1.0">Do the drinks have caffeine?</summary>
+            <p data-i18n="faq.items.1.1">Anything made with black, green, or oolong tea does. Brown sugar pearl milk has no tea, so it is a good late-night pick.</p>
           </details>
           <details>
-            <summary>What are tapioca pearls made of?</summary>
-            <p>Starch from the cassava root, cooked until chewy and soaked in a light syrup.</p>
+            <summary data-i18n="faq.items.2.0">What are tapioca pearls made of?</summary>
+            <p data-i18n="faq.items.2.1">Starch from the cassava root, cooked until chewy and soaked in a light syrup.</p>
           </details>
           <details>
-            <summary>Can I swap in non-dairy milk?</summary>
-            <p>Ask at the counter. Non-dairy options for this concept are listed as [non-dairy options].</p>
+            <summary data-i18n="faq.items.3.0">Can I swap in non-dairy milk?</summary>
+            <p data-i18n="faq.items.3.1">Ask at the counter. Non-dairy options for this concept are listed as [non-dairy options].</p>
           </details>
           <details>
-            <summary>Is this the official Teaspoon website?</summary>
-            <p>No. This is a concept design and is not affiliated with or endorsed by Teaspoon. Use Google Maps for real hours and location.</p>
+            <summary data-i18n="faq.items.4.0">Is this the official Teaspoon website?</summary>
+            <p data-i18n="faq.items.4.1">No. This is a concept design and is not affiliated with or endorsed by Teaspoon. Use Google Maps for real hours and location.</p>
           </details>
         </div>
       </div>
@@ -159,15 +159,15 @@
   <footer class="foot">
     <div class="wrap foot__grid">
       <p class="foot__mark">Teaspoon<br><span>San Jose, CA</span></p>
-      <nav aria-label="Footer">
+      <nav aria-label="Footer" data-i18n-label="nav.footer">
         <ul>
-          <li><a href="#menu">Menu</a></li>
-          <li><a href="#build">Build a drink</a></li>
-          <li><a href="#visit">Visit</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#menu" data-i18n="nav.menu">Menu</a></li>
+          <li><a href="#build" data-i18n="nav.build">Build a drink</a></li>
+          <li><a href="#visit" data-i18n="nav.visit">Visit</a></li>
+          <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
         </ul>
       </nav>
-      <p class="foot__note">Concept design — not affiliated with or endorsed by Teaspoon. Drinks, copy, and illustrations are original to this concept; address, phone, and hours are placeholders.</p>
+      <p class="foot__note" data-i18n="foot.note">Concept design — not affiliated with or endorsed by Teaspoon. Drinks, copy, and illustrations are original to this concept; address, phone, and hours are placeholders.</p>
     </div>
   </footer>
 
