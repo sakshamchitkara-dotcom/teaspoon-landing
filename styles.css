@@ -248,6 +248,24 @@ a { color: var(--accent); text-underline-offset: .2em; }
 }
 .theme[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 
+/* Language picker sits beside the theme toggle and matches it */
+.tools { display: flex; gap: .5rem; align-items: center; }
+.lang select {
+  appearance: none; font: 700 1rem/1 var(--font-body); color: var(--ink); min-height: 44px; cursor: pointer;
+  border: 2px solid var(--line); border-radius: var(--radius-pill); padding: .6em 2.2em .6em 1em;
+  background: var(--surface) conic-gradient(from -45deg at 50% 100%, var(--ink) 90deg, transparent 0) no-repeat right 1em center / .7em .4em;
+}
+.lang option { color: initial; background: initial; }
+
+/* Atkinson Hyperlegible and DynaPuff have no Vietnamese glyphs; swap whole faces
+   rather than letting diacritics fall back letter by letter. */
+:root:lang(vi) {
+  --font-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Lexend", system-ui, sans-serif;
+}
+:lang(vi) h1, :lang(vi) h2, :lang(vi) h3 { font-weight: 800; line-height: 1.12; }
+:lang(vi) .hero h1 { font-size: clamp(2.5rem, 6.5vw, 4.6rem); }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -255,7 +273,7 @@ a { color: var(--accent); text-underline-offset: .2em; }
 
 @media (max-width: 760px) {
   .top nav { order: 3; width: 100%; }
-  .top ul { justify-content: space-between; }
+  .top ul { justify-content: flex-start; gap: .25rem 1.5rem; }
   .hero__cup { width: min(52%, 220px); }
 }
 .opt input:disabled + span { opacity: .45; cursor: not-allowed; }
