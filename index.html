@@ -22,6 +22,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="theme-color" content="#e6eeda" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1f1812" media="(prefers-color-scheme: dark)">
@@ -29,6 +30,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=DynaPuff:wght@500;700&family=Baloo+2:wght@600;800&family=Lexend:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
+  <!-- Structured data. Concept design: street address, phone, hours, and prices are
+       unknown placeholders, so they are left out rather than published as facts. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Teaspoon San Jose (concept design)",
+    "description": "Concept landing page for a boba shop in San Jose, CA. Not affiliated with or endorsed by Teaspoon.",
+    "url": "https://sakshamchitkara-dotcom.github.io/teaspoon-landing/",
+    "image": "https://sakshamchitkara-dotcom.github.io/teaspoon-landing/og.png",
+    "logo": "https://sakshamchitkara-dotcom.github.io/teaspoon-landing/icons/icon-512.png",
+    "hasMap": "https://www.google.com/maps/search/?api=1&query=Teaspoon+San+Jose",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "San Jose",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    }
+  }
+  </script>
   <script>try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; var l = localStorage.getItem("lang"); if (l) document.documentElement.lang = l; } catch (e) {}</script>
 </head>
 <body>

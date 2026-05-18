@@ -1,0 +1,6 @@
+# Crawlers only read robots.txt at a host's root, so on a GitHub Pages project
+# site this file is informational; the sitemap is also linked from index.html.
+User-agent: *
+Allow: /
+
+Sitemap: https://sakshamchitkara-dotcom.github.io/teaspoon-landing/sitemap.xml
