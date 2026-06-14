@@ -3,9 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "playwright test",
     "rasterize": "node scripts/rasterize.mjs"
   },
   "devDependencies": {
-    "playwright": "1.57.0"
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.57.0"
   }
 }
