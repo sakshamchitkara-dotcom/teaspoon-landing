@@ -73,3 +73,15 @@ test("works offline after the first visit", async ({ page, context }) => {
   await expect(page.locator("#summary")).toHaveText("Mango green 0% sweet, regular ice, with crystal boba.");
   await context.setOffline(false);
 });
+
+test("a missing page doesn't replace the offline copy", async ({ page }) => {
+  await page.goto("./");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.goto("./no-such-page");
+  errors.length = 0; // the 404 itself is logged as a failed load; that's expected here
+  await page.waitForTimeout(300); // give a (buggy) background cache write time to land
+  // Checked in the cache directly: offline, the browser's HTTP cache can mask a bad copy.
+  const cached = await page.evaluate(async () => (await caches.match("./")).status);
+  expect(cached).toBe(200);
+});

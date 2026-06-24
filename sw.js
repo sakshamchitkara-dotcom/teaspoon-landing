@@ -1,7 +1,7 @@
 // Offline support. Pages go network-first so visitors see edits right away;
 // everything else is stale-while-revalidate, so it loads from cache and refreshes behind the scenes.
 // ponytail: a stale asset can survive one extra visit after a deploy; bump VERSION to force a clean cache.
-const VERSION = "teaspoon-v1";
+const VERSION = "teaspoon-v2";
 const SHELL = [
   "./", "styles.css", "app.js", "data.js", "i18n.js", "favicon.svg",
   "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png",
@@ -26,9 +26,14 @@ self.addEventListener("fetch", (e) => {
 
   if (req.mode === "navigate") {
     // Saved-drink links carry a query string; offline they all get the cached page.
+    // Only a good response for the page itself refreshes that copy, so a mistyped
+    // URL (404) can't replace the page people see offline.
+    const isHome = url.pathname === new URL("./", location).pathname;
     e.respondWith(fetch(req).then((res) => {
-      const copy = res.clone();
-      caches.open(VERSION).then((c) => c.put("./", copy));
+      if (res.ok && isHome) {
+        const copy = res.clone();
+        e.waitUntil(caches.open(VERSION).then((c) => c.put("./", copy)));
+      }
       return res;
     }).catch(() => caches.match("./")));
     return;
