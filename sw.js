@@ -1,9 +1,9 @@
 // Offline support. Pages go network-first so visitors see edits right away;
 // everything else is stale-while-revalidate, so it loads from cache and refreshes behind the scenes.
 // ponytail: a stale asset can survive one extra visit after a deploy; bump VERSION to force a clean cache.
-const VERSION = "teaspoon-v2";
+const VERSION = "teaspoon-v3";
 const SHELL = [
-  "./", "styles.css", "app.js", "data.js", "i18n.js", "favicon.svg",
+  "./", "app.js", "data.js", "i18n.js", "favicon.svg",
   "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png",
 ];
 const FONT_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com"];

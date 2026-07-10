@@ -36,7 +36,7 @@ leaves out street address, phone, hours, and prices for the same reason.
 
 To add a language, copy the `en` block in `i18n.js`, translate it, and add an `<option>`
 to the `#lang` select in `index.html`. If its script needs glyphs the Latin fonts lack,
-swap fonts with a `:lang()` rule the way Vietnamese does in `styles.css`.
+swap fonts with a `:lang()` rule the way Vietnamese does in the `<style>` block of `index.html`.
 
 ### Saved-drink links
 
@@ -86,8 +86,7 @@ from `index.html`.
 
 ## Files
 
-- `index.html` page structure, meta tags, structured data
-- `styles.css` design tokens and styles
+- `index.html` page structure, meta tags, structured data, and all styles (inlined in `<style>` so first paint needs one request)
 - `data.js` shop config, menu, builder options, seasonal specials
 - `i18n.js` all copy in English, Spanish, and Vietnamese
 - `app.js` renders every section, language picker, saved-drink links, service worker registration
