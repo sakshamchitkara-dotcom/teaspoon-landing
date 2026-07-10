@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | Teaspoon San Jose (concept design)</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="light dark">
+  <!-- GitHub Pages serves this file for any missing URL, at any depth, so links are root-absolute. -->
+  <link rel="icon" href="/teaspoon-landing/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=DynaPuff:wght@700&amp;display=swap">
+  <!-- A small copy of the home page tokens; this page stands alone. -->
+  <style>
+    :root {
+      --bg: #e6eeda; --surface: #f8f5ee; --ink: #2a1c12; --ink-soft: #5a4a3c;
+      --accent: #6a4ba3; --accent-ink: #fff; --mango: #f2a93b; --line: #2a1c12; --cup: #fffdf8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1f1812; --surface: #2b221a; --ink: #efe8da; --ink-soft: #c9bda9;
+        --accent: #c3aef0; --accent-ink: #1f1812; --mango: #f2b252; --line: #efe8da; --cup: #3a2f25;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; grid-template-rows: 1fr auto;
+      background: var(--bg); color: var(--ink); font: 400 1.125rem/1.55 "Atkinson Hyperlegible", system-ui, sans-serif;
+    }
+    main {
+      width: min(100% - 32px, 60rem); margin: auto; padding-block: 48px;
+      display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px; align-items: center;
+    }
+    h1 { font: 700 clamp(2.5rem, 7vw, 4.5rem)/.95 "DynaPuff", "Trebuchet MS", system-ui, sans-serif; margin: 0 0 .4em; }
+    p { margin: 0 0 1em; max-width: 44ch; color: var(--ink-soft); }
+    .actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+    .btn {
+      display: inline-flex; font: inherit; font-weight: 700; line-height: 1; padding: .9em 1.4em; border-radius: 999px;
+      border: 2px solid var(--line); background: var(--accent); color: var(--accent-ink);
+      text-decoration: none; box-shadow: 4px 4px 0 var(--line); transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--line); }
+    .btn--quiet { background: transparent; color: var(--ink); }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    svg { display: block; width: min(100%, 240px); justify-self: center; }
+    .cup-line { stroke: var(--line); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; fill: none; }
+    .straw { fill: var(--accent); stroke: var(--line); stroke-width: 4; }
+    footer { padding: 24px 16px; text-align: center; font-size: 1rem; background: var(--ink); color: var(--bg); }
+    footer p { margin: 0 auto; max-width: 70ch; color: inherit; opacity: .85; }
+    @media (max-width: 640px) {
+      main { grid-template-columns: 1fr; }
+      svg { width: 140px; grid-row: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div>
+      <h1>This cup is empty.</h1>
+      <p>Nothing is poured at this address. The link may have a typo, or the page moved.</p>
+      <div class="actions">
+        <a class="btn" href="/teaspoon-landing/">Go to the home page</a>
+        <a class="btn btn--quiet" href="/teaspoon-landing/#menu">See the menu</a>
+      </div>
+    </div>
+    <!-- An empty cup with the straw leaning on the rim, drawn like the home page cups -->
+    <svg viewBox="0 0 220 300" aria-hidden="true" focusable="false">
+      <rect class="straw" x="150" y="10" width="18" height="170" rx="9" transform="rotate(28 159 95)"/>
+      <path d="M34 60 H186 L166 286 H54 Z" fill="var(--cup)"/>
+      <path d="M62 268 Q110 280 158 268" stroke="var(--mango)" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path class="cup-line" d="M34 60 H186 L166 286 H54 Z"/>
+      <path class="cup-line" d="M28 60 H192"/>
+    </svg>
+  </main>
+  <footer>
+    <p>Concept design — not affiliated with or endorsed by Teaspoon.</p>
+  </footer>
+</body>
+</html>
