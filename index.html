@@ -193,7 +193,7 @@
     .menu__head { display: grid; grid-template-columns: auto 1fr; gap: 1rem 3rem; align-items: end; }
     .menu__head p { margin: 0 0 .6em; color: var(--ink-soft); }
     .menu__tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin: 2rem 0; }
-    .filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .filters, .menu__extra { display: flex; flex-wrap: wrap; gap: .5rem; }
     .info, .info-note { display: none; }
     .show-info .info { display: flex; flex-wrap: wrap; gap: .35rem; list-style: none; margin: .5rem 0 0; padding: 0; }
     .show-info .info-note { display: block; margin: 0 0 1rem; font-size: 1rem; color: var(--ink-soft); }
@@ -337,6 +337,32 @@
     :lang(vi) h1, :lang(vi) h2, :lang(vi) h3 { font-weight: 800; line-height: 1.12; }
     :lang(vi) .hero h1 { font-size: clamp(2.5rem, 6.5vw, 4.6rem); }
 
+    /* Print: just the menu, all categories, with the allergen notes, in ink on white */
+    @media print {
+      @page { margin: 14mm; }
+      :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+        --bg: #fff; --surface: #fff; --ink: #000; --ink-soft: #333; --accent: #4a2f7f; --line: #000; --cup: #fff;
+      }
+      body { font-size: 11pt; background: #fff; }
+      .skip, .top nav, .tools, main > section:not(#menu), .menu__tools, .foot nav { display: none !important; }
+      .top { padding-block: 0 8pt; }
+      .section.menu { padding: 0; border: 0; }
+      .menu h2 { font-size: 26pt; }
+      .info, .show-info .info { display: flex; flex-wrap: wrap; gap: 4pt; list-style: none; margin: 4pt 0 0; padding: 0; }
+      .info-note { display: block; font-size: 9pt; }
+      .info li { font-size: 8pt; padding: 0 5pt; border-width: 1px; }
+      .board { grid-template-columns: 1fr 1fr; column-gap: 24pt; }
+      .board > li { break-inside: avoid; padding-block: 8pt; }
+      .board h3 { font-size: 13pt; }
+      .board p { font-size: 10pt; }
+      .board svg { width: 40px; height: 52px; }
+      svg { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .foot { background: none; color: #000; padding: 12pt 0 0; border-top: 1px solid #000; }
+      .foot__grid { display: block; }
+      .foot__mark { display: none; }
+      .foot__note { font-size: 9pt; opacity: 1; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -454,7 +480,10 @@
         </div>
         <div class="menu__tools">
           <div class="filters" role="group" aria-label="Filter menu by category" data-i18n-label="menu.filter"></div>
-          <button type="button" class="chip chip--info" id="info-toggle" aria-pressed="false" aria-controls="menu-board" data-i18n="menu.info.toggle">Allergens and caffeine</button>
+          <div class="menu__extra">
+            <button type="button" class="chip chip--info" id="info-toggle" aria-pressed="false" aria-controls="menu-board" data-i18n="menu.info.toggle">Allergens and caffeine</button>
+            <button type="button" class="chip" id="print-menu" data-i18n="menu.info.print">Print the menu</button>
+          </div>
         </div>
         <p class="visually-hidden" role="status" id="menu-status"></p>
         <p class="info-note" data-i18n="menu.info.note">Sample allergen and caffeine notes for this concept, not checked against a real recipe. Calories are placeholders. If you have an allergy, ask at the counter.</p>

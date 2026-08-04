@@ -114,3 +114,19 @@ test("allergen toggle shows the sample notes", async ({ page }) => {
   const { violations } = await new AxeBuilder({ page }).analyze();
   expect(violations.map((v) => v.id)).toEqual([]);
 });
+
+test("print shows the whole menu with allergen notes and nothing else", async ({ page }) => {
+  await page.goto("./");
+  await page.click('.chip[data-cat="fruit"]');
+  await page.evaluate(() => dispatchEvent(new Event("beforeprint")));
+  await page.emulateMedia({ media: "print" });
+  await expect(page.locator(".board > li")).toHaveCount(14);
+  await expect(page.locator(".board .info").first()).toBeVisible();
+  await expect(page.locator(".hero")).toBeHidden();
+  await expect(page.locator("#build")).toBeHidden();
+  await expect(page.locator(".menu__tools")).toBeHidden();
+  await expect(page.locator(".foot__note")).toBeVisible();
+  await page.emulateMedia({ media: "screen" });
+  await page.evaluate(() => dispatchEvent(new Event("afterprint")));
+  await expect(page.locator(".board > li")).toHaveCount(3);
+});

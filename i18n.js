@@ -24,6 +24,7 @@ export const STRINGS = {
       filter: "Filter menu by category",
       info: {
         toggle: "Allergens and caffeine",
+        print: "Print the menu",
         note: "Sample allergen and caffeine notes for this concept, not checked against a real recipe. Calories are placeholders. If you have an allergy, ask at the counter.",
         allergens: { milk: "Milk", egg: "Egg" },
         none: "No milk or egg",
@@ -152,6 +153,7 @@ export const STRINGS = {
       filter: "Filtrar el menú por categoría",
       info: {
         toggle: "Alérgenos y cafeína",
+        print: "Imprimir el menú",
         note: "Notas de muestra sobre alérgenos y cafeína para este concepto, sin comprobar con una receta real. Las calorías son marcadores de posición. Si tienes alguna alergia, pregunta en el mostrador.",
         allergens: { milk: "Leche", egg: "Huevo" },
         none: "Sin leche ni huevo",
@@ -280,6 +282,7 @@ export const STRINGS = {
       filter: "Lọc thực đơn theo loại",
       info: {
         toggle: "Chất gây dị ứng và caffeine",
+        print: "In thực đơn",
         note: "Thông tin mẫu về chất gây dị ứng và caffeine cho bản thiết kế này, chưa đối chiếu với công thức thật. Lượng calo chỉ là chỗ trống để điền sau. Nếu bạn bị dị ứng, hãy hỏi tại quầy.",
         allergens: { milk: "Sữa", egg: "Trứng" },
         none: "Không có sữa hay trứng",
