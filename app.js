@@ -1,5 +1,5 @@
 // Teaspoon concept page. Facts come from data.js, words from i18n.js.
-import { SHOP, CATEGORIES, MENU, BUILDER, SPECIALS } from "./data.js";
+import { SHOP, CATEGORIES, MENU, BUILDER, SPECIALS, QUIZ } from "./data.js";
 import { STRINGS } from "./i18n.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -164,17 +164,23 @@ function builder(drink = form.elements.length ? readDrink() : drinkFromQuery(loc
 }
 function renderDrink() {
   const d = readDrink();
-  const base = BUILDER.bases.find((b) => b.id === d.base);
-  const tops = BUILDER.toppings.filter((tp) => d.top.includes(tp.id));
-  form.querySelectorAll('input[name="top"]').forEach((i) => { i.disabled = !i.checked && tops.length >= MAX_TOPPINGS; });
-  $("#preview-cup").innerHTML = cup({ tea: base.tea, ice: d.ice, sweet: d.sweet, bits: tops.map((tp) => tp.color), fill: 0.82 });
-  const lower = (s) => s.toLocaleLowerCase(lang);
-  const list = tops.map((tp) => lower(t(`build.tops.${tp.id}`)));
-  const joined = list.length > 1 ? `${list.slice(0, -1).join(", ")} ${t("build.and")} ${list.at(-1)}` : list[0];
-  const text = t("build.summary", { sweet: d.sweet, ice: lower(t(`build.iceLevels.${d.ice}`)), tops: list.length ? t("build.with", { list: joined }) : t("build.none") });
-  $("#summary").innerHTML = `<strong>${esc(t(`build.bases.${base.id}`))}</strong> ${esc(text)}`;
+  form.querySelectorAll('input[name="top"]').forEach((i) => { i.disabled = !i.checked && d.top.length >= MAX_TOPPINGS; });
+  $("#preview-cup").innerHTML = drinkCup(d);
+  $("#summary").innerHTML = describe(d);
   if (!$("#save-link").hidden) syncSaved();
 }
+// "<strong>Taro</strong> 25% sweet, less ice, with tapioca pearls." Shared by the builder and the quiz.
+function describe(d) {
+  const lower = (s) => s.toLocaleLowerCase(lang);
+  const list = d.top.map((id) => lower(t(`build.tops.${id}`)));
+  const joined = list.length > 1 ? `${list.slice(0, -1).join(", ")} ${t("build.and")} ${list.at(-1)}` : list[0];
+  const text = t("build.summary", { sweet: d.sweet, ice: lower(t(`build.iceLevels.${d.ice}`)), tops: list.length ? t("build.with", { list: joined }) : t("build.none") });
+  return `<strong>${esc(t(`build.bases.${d.base}`))}</strong> ${esc(text)}`;
+}
+const drinkCup = (d) => cup({
+  tea: BUILDER.bases.find((b) => b.id === d.base).tea, ice: d.ice, sweet: d.sweet, fill: 0.82,
+  bits: BUILDER.toppings.filter((tp) => d.top.includes(tp.id)).map((tp) => tp.color),
+});
 // Once saved, the address bar and link field follow every change
 function syncSaved() {
   const url = drinkUrl(readDrink());
@@ -197,6 +203,28 @@ $("#copy").addEventListener("click", async () => {
   }
 });
 form.addEventListener("change", renderDrink);
+
+// "Find your drink": four answers -> one builder drink, shown with a link that opens it in the builder
+export const quizDrink = (a) => ({ base: QUIZ.flavor[a.flavor], sweet: QUIZ.sweet[a.sweet], ice: QUIZ.day[a.day], top: QUIZ.chew[a.chew] });
+const quizForm = $("#quiz-form");
+function quiz() {
+  const picked = Object.fromEntries(new FormData(quizForm));
+  quizForm.innerHTML = Object.keys(QUIZ).map((q) => `<fieldset><legend>${esc(t(`quiz.q.${q}`))}</legend><div class="options">${
+    Object.keys(QUIZ[q]).map((a, i) => `<label class="opt"><input type="radio" name="${q}" value="${a}"${i ? "" : " required"}${picked[q] === a ? " checked" : ""}><span>${esc(t(`quiz.a.${q}.${a}`))}</span></label>`).join("")
+  }</div></fieldset>`).join("") + `<button class="btn" type="submit">${esc(t("quiz.submit"))}</button>`;
+  showQuiz(Object.keys(picked).length === 4 && quizForm.dataset.done ? quizDrink(picked) : null);
+}
+function showQuiz(d) {
+  $("#quiz-result").innerHTML = d
+    ? `${drinkCup(d)}<div><p class="quiz__label">${esc(t("quiz.result"))}</p><p class="preview__summary">${describe(d)}</p>
+      <a class="btn" href="${esc(drinkUrl(d))}">${esc(t("quiz.open"))}</a></div>`
+    : `${cup({ tea: "var(--cup)", fill: 0 })}<p class="quiz__empty">${esc(t("quiz.empty"))}</p>`;
+}
+quizForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  quizForm.dataset.done = "1";
+  showQuiz(quizDrink(Object.fromEntries(new FormData(quizForm))));
+});
 
 // Gallery: illustrated "posts", no photos
 function gallery() {
@@ -238,6 +266,7 @@ function render() {
   staticText();
   specials();
   menu();
+  quiz();
   builder();
   gallery();
   shopFacts();
