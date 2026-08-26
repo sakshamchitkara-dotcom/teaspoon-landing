@@ -149,3 +149,13 @@ test("quiz turns four answers into a drink the builder can open", async ({ page 
   await expect(page).toHaveURL(/\?base=taro&sweet=25&ice=0&top=pudding#build$/);
   await expect(page.locator("#summary")).toHaveText("Taro 25% de dulzura, sin hielo, con flan de huevo.");
 });
+
+test("a CORS fetch of a cached font stylesheet still works", async ({ page }) => {
+  await page.goto("./");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.waitForLoadState("networkidle"); // the <link> has now cached an opaque copy
+  const href = await page.locator("link[rel=preload][as=style], link[rel=stylesheet][href*=fonts]").first().getAttribute("href");
+  const ok = await page.evaluate((u) => fetch(u).then((r) => r.ok, () => false), href);
+  expect(ok).toBe(true);
+});
