@@ -132,6 +132,14 @@ export const STRINGS = {
       hoursCaption: "Opening hours",
       days: { monThu: "Monday to Thursday", friSat: "Friday and Saturday", sun: "Sunday" },
     },
+    stamps: {
+      title: "Stamp card demo",
+      intro: "A preview of how a loyalty card could work here. Stamps are saved only in this browser, aren't worth anything, and there is no real rewards program.",
+      status: "{n} of {total} stamps",
+      full: "Card full. In a real shop this would be a free drink; here it's only a demo.",
+      add: "Add a demo stamp",
+      reset: "Start over",
+    },
     faq: {
       title: "Questions at the counter",
       items: [
@@ -276,6 +284,14 @@ export const STRINGS = {
       hoursCaption: "Horario de apertura",
       days: { monThu: "De lunes a jueves", friSat: "Viernes y sábado", sun: "Domingo" },
     },
+    stamps: {
+      title: "Tarjeta de sellos (demo)",
+      intro: "Una muestra de cómo podría funcionar una tarjeta de lealtad. Los sellos se guardan solo en este navegador, no tienen valor y no existe un programa de recompensas real.",
+      status: "{n} de {total} sellos",
+      full: "Tarjeta completa. En una tienda real sería una bebida gratis; aquí es solo una demostración.",
+      add: "Agregar un sello de prueba",
+      reset: "Empezar de nuevo",
+    },
     faq: {
       title: "Preguntas en el mostrador",
       items: [
@@ -419,6 +435,14 @@ export const STRINGS = {
       hours: "Giờ mở cửa",
       hoursCaption: "Giờ mở cửa",
       days: { monThu: "Thứ Hai đến Thứ Năm", friSat: "Thứ Sáu và Thứ Bảy", sun: "Chủ Nhật" },
+    },
+    stamps: {
+      title: "Thẻ tích điểm (bản demo)",
+      intro: "Bản xem trước của một thẻ khách hàng thân thiết. Con dấu chỉ được lưu trong trình duyệt này, không có giá trị và không có chương trình đổi thưởng thật.",
+      status: "{n} trên {total} con dấu",
+      full: "Thẻ đã đầy. Ở cửa hàng thật, bạn sẽ được một ly miễn phí; ở đây chỉ là bản demo.",
+      add: "Thêm một con dấu thử",
+      reset: "Làm lại từ đầu",
     },
     faq: {
       title: "Câu hỏi ở quầy",
