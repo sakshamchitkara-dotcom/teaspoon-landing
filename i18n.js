@@ -111,6 +111,11 @@ export const STRINGS = {
     gallery: {
       title: "From the feed",
       intro: "Illustrated posts in the style of our social feed. Follow along at {handle}.",
+      prev: "Previous post",
+      next: "Next post",
+      status: "Posts {from} to {to} of {total}",
+      statusOne: "Post {from} of {total}",
+      track: "Posts, scroll sideways for more",
       posts: [
         "Taro milk tea with pearls on a mango-yellow background",
         "A close-up pile of glossy tapioca pearls",
@@ -263,6 +268,11 @@ export const STRINGS = {
     gallery: {
       title: "De nuestras redes",
       intro: "Publicaciones ilustradas al estilo de nuestras redes. Síguenos en {handle}.",
+      prev: "Publicación anterior",
+      next: "Publicación siguiente",
+      status: "Publicaciones {from} a {to} de {total}",
+      statusOne: "Publicación {from} de {total}",
+      track: "Publicaciones, desliza hacia el lado para ver más",
       posts: [
         "Té con leche de taro con perlas sobre fondo amarillo mango",
         "Un montón de perlas de tapioca brillantes, de cerca",
@@ -415,6 +425,11 @@ export const STRINGS = {
     gallery: {
       title: "Từ trang mạng xã hội",
       intro: "Các bài đăng minh họa theo phong cách trang mạng xã hội của quán. Theo dõi tại {handle}.",
+      prev: "Bài trước",
+      next: "Bài tiếp theo",
+      status: "Bài {from} đến {to} trên {total}",
+      statusOne: "Bài {from} trên {total}",
+      track: "Các bài đăng, cuộn ngang để xem thêm",
       posts: [
         "Trà sữa khoai môn có trân châu trên nền vàng xoài",
         "Cận cảnh một đống trân châu bóng",

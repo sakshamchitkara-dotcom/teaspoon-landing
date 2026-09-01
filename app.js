@@ -238,6 +238,7 @@ function gallery() {
   ];
   $("#feed").innerHTML = posts.map((p, i) => `<li><div class="tile ${p.cls || ""}" style="--tile:${p.bg}" role="img" aria-label="${esc(t(`gallery.posts.${i}`))}">
     ${p.art || ""}${p.text ? `<span class="tile__text" aria-hidden="true">${p.text}</span>` : ""}</div></li>`).join("");
+  feedState();
 }
 
 // Stamp card demo: a count in localStorage, nothing more. No rewards exist.
@@ -256,6 +257,25 @@ function stamps(n = getStamps()) {
 }
 $("#stamp-add").addEventListener("click", () => setStamps(getStamps() + 1));
 $("#stamp-reset").addEventListener("click", () => { setStamps(0); $("#stamp-add").focus(); });
+
+// Gallery carousel: buttons move one post; the status and button states follow any scroll
+// (buttons, swipe, keys), so there's one source of truth: the track's scroll position.
+const feed = $("#feed");
+const feedStep = () => feed.children[1].offsetLeft - feed.children[0].offsetLeft;
+function feedState() {
+  const step = feedStep(), total = feed.children.length;
+  const from = Math.round(feed.scrollLeft / step) + 1;
+  const shown = Math.max(1, Math.round((feed.clientWidth + step - feed.children[0].offsetWidth) / step));
+  const to = Math.min(total, from + shown - 1);
+  $("#feed-status").textContent = t(to > from ? "gallery.status" : "gallery.statusOne", { from, to, total });
+  $("#feed-prev").disabled = feed.scrollLeft <= 1;
+  $("#feed-next").disabled = feed.scrollLeft + feed.clientWidth >= feed.scrollWidth - 1;
+}
+$("#feed-prev").addEventListener("click", () => feed.scrollBy({ left: -feedStep() }));
+$("#feed-next").addEventListener("click", () => feed.scrollBy({ left: feedStep() }));
+let feedTick;
+feed.addEventListener("scroll", () => { cancelAnimationFrame(feedTick); feedTick = requestAnimationFrame(feedState); });
+addEventListener("resize", feedState);
 
 // Shop facts from the single config object
 function shopFacts() {
