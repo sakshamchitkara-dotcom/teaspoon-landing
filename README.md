@@ -12,18 +12,25 @@ Live: https://sakshamchitkara-dotcom.github.io/teaspoon-landing/
 - Hero with a pouring-cup illustration (the one page-load animation)
 - Seasonal specials band that changes with the calendar
 - Menu board rendered from data, filterable by milk tea, fruit tea, specialty, and toppings
+- Allergen and caffeine toggle on the menu (sample notes, calories left as a placeholder)
+- Print stylesheet: printing gives a clean one-to-two page menu with the allergen notes
+- "Find your drink" quiz: four questions that pour a drink you can open in the builder
 - Build-your-drink: base, sweetness, ice, and up to 3 toppings with a live cup preview and summary
 - "Save my drink": turns the current drink into a link you can bookmark or copy and send
 - English, Español, and Tiếng Việt, with a picker that remembers your choice
 - Works offline after the first visit and can be installed as an app
-- San Jose story, illustrated social feed, visit info with a Google Maps search link, FAQ
+- San Jose story, illustrated social feed as a swipeable carousel, visit info with a Google Maps search link, FAQ
+- Stamp card demo that counts stamps in this browser only (clearly labeled, no real rewards)
+- A styled 404 page for mistyped links
 - Light and dark themes (follows the OS, with a toggle), reduced-motion support, keyboard friendly
 
 ## Placeholders
 
 Address, phone, hours, and Instagram handle are deliberately placeholders like `[address]`.
 Edit them in one place: `SHOP` in [`data.js`](data.js). The sample menu and specials there
-are invented for the concept and have no prices. The structured data in `index.html`
+are invented for the concept and have no prices. The allergen and caffeine notes on `MENU`
+are inferred from the sample descriptions, not a real recipe, and the page says so; calories
+show as `[calories]` until you add `kcal` to an item. The structured data in `index.html`
 leaves out street address, phone, hours, and prices for the same reason.
 
 ## Editing content
@@ -32,6 +39,7 @@ leaves out street address, phone, hours, and prices for the same reason.
 | --- | --- |
 | Shop facts, menu ids and colors, builder options | `data.js` |
 | Seasonal specials (`from` / `to` as `MM-DD`, may wrap past New Year) | `SPECIALS` in `data.js` |
+| Quiz answers and the drink each one picks | `QUIZ` in `data.js` |
 | Every visible word, per language | `i18n.js` (English is the fallback for missing keys) |
 
 To add a language, copy the `en` block in `i18n.js`, translate it, and add an `<option>`
@@ -67,7 +75,8 @@ npm test
 Playwright smoke tests (`tests/smoke.spec.js`) run on desktop and mobile Chromium: each
 language in light and dark with [axe](https://github.com/dequelabs/axe-core) checks and
 no console errors, the language picker, saved-drink links, the specials date logic,
-and offline loading. GitHub Actions runs them on every push and pull request.
+offline loading (including that a 404 can't replace the offline copy), the allergen
+toggle, print output, the quiz, the stamp card, the gallery carousel, and the 404 page. GitHub Actions runs them on every push and pull request.
 
 ## Images
 
@@ -90,6 +99,7 @@ from `index.html`.
 - `data.js` shop config, menu, builder options, seasonal specials
 - `i18n.js` all copy in English, Spanish, and Vietnamese
 - `app.js` renders every section, language picker, saved-drink links, service worker registration
+- `404.html` standalone not-found page (GitHub Pages serves it for missing URLs)
 - `sw.js` offline cache
 - `manifest.webmanifest`, `icons/` installable app
 - `og.svg` / `og.png` social preview image
