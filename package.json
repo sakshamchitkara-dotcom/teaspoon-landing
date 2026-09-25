@@ -1,0 +1,11 @@
+{
+  "name": "teaspoon-landing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "rasterize": "node scripts/rasterize.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.57.0"
+  }
+}
