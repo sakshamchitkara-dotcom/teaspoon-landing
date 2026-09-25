@@ -258,3 +258,5 @@ a { color: var(--accent); text-underline-offset: .2em; }
   .top ul { justify-content: space-between; }
   .hero__cup { width: min(52%, 220px); }
 }
+.opt input:disabled + span { opacity: .45; cursor: not-allowed; }
+.opt input:disabled { cursor: not-allowed; }

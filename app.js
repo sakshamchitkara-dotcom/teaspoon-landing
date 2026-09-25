@@ -76,7 +76,7 @@ function builder() {
     $("#preview-cup").innerHTML = cup({ tea: base.tea, ice, sweet, bits: tops.map((t) => t.color), fill: 0.82 });
     const list = tops.map((t) => t.label.toLowerCase());
     const withText = list.length ? `with ${list.length > 1 ? list.slice(0, -1).join(", ") + " and " + list.at(-1) : list[0]}` : "no toppings";
-    $("#summary").innerHTML = `<strong>${esc(base.label)}</strong>${sweet}% sweet, ${BUILDER.ice[ice].toLowerCase()}, ${esc(withText)}.`;
+    $("#summary").innerHTML = `<strong>${esc(base.label)}</strong> ${sweet}% sweet, ${BUILDER.ice[ice].toLowerCase()}, ${esc(withText)}.`;
   };
   form.addEventListener("change", render);
   render();
