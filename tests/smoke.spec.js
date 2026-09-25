@@ -6,7 +6,9 @@ let errors;
 test.beforeEach(async ({ page }) => {
   errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  // Font downloads from Google's CDN that fail or are cut off by a navigation are the network's
+  // problem, not the page's; Firefox logs them as errors where Chromium stays quiet.
+  page.on("console", (m) => { if (m.type() === "error" && !/fonts\.(gstatic|googleapis)\.com/.test(m.text())) errors.push(m.text()); });
 });
 test.afterEach(() => { expect(errors, "console errors").toEqual([]); });
 
@@ -64,7 +66,9 @@ test("seasonal specials follow the calendar, including across New Year", async (
   expect(await at("2026-08-31")).toEqual([["watermelon"], "horchata"]);
 });
 
-test("works offline after the first visit", async ({ page, context }) => {
+test("works offline after the first visit", async ({ page, context, browserName }) => {
+  // Playwright's WebKit offline mode blocks navigations before the service worker sees them.
+  test.skip(browserName === "webkit", "WebKit offline emulation bypasses the service worker");
   await page.goto("./");
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
@@ -197,6 +201,8 @@ test("gallery carousel moves one post at a time and reports where it is", async 
   await page.focus("#feed");
   await page.keyboard.press("ArrowRight");
   await expect(status).toHaveText(isMobile ? "Post 3 of 6" : "Posts 3 to 5 of 6");
+  // WebKit animates keyboard scrolls even with reduced motion; let it land before clicking again
+  await page.waitForFunction(() => { const f = document.querySelector("#feed"); return Math.abs(f.scrollLeft - (f.children[2].offsetLeft - f.children[0].offsetLeft)) < 2; });
   const last = isMobile ? 3 : 1;
   for (let i = 0; i < last; i++) await page.click("#feed-next");
   await expect(page.locator("#feed-next")).toBeDisabled();
