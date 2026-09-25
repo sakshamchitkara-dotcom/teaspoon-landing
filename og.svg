@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#e6eeda"/>
+  <rect y="560" width="1200" height="70" fill="#2a1c12"/>
+  <g font-family="DynaPuff, 'Trebuchet MS', sans-serif" font-weight="700" fill="#2a1c12">
+    <text x="80" y="118" font-size="44">Teaspoon</text>
+    <text x="80" y="270" font-size="104">Tea first.</text>
+    <text x="80" y="400" font-size="104">Pearls always.</text>
+  </g>
+  <text x="80" y="478" font-family="'Atkinson Hyperlegible', sans-serif" font-size="34" fill="#5a4a3c">Boba in San Jose, CA. Build your own cup.</text>
+  <text x="80" y="604" font-family="'Atkinson Hyperlegible', sans-serif" font-size="26" fill="#e6eeda">Concept design, not affiliated with or endorsed by Teaspoon.</text>
+  <!-- the hero cup, scaled up -->
+  <g transform="translate(900 66) scale(1.5)">
+    <defs><clipPath id="c"><path d="M34 60 H186 L166 286 H54 Z"/></clipPath></defs>
+    <rect x="118" y="4" width="18" height="230" rx="9" transform="rotate(12 127 120)" fill="#6a4ba3" stroke="#2a1c12" stroke-width="4"/>
+    <g clip-path="url(#c)">
+      <rect x="0" y="60" width="220" height="240" fill="#fffdf8"/>
+      <rect x="0" y="96" width="220" height="200" fill="#c79a6c"/>
+      <path d="M0 104 Q55 90 110 104 T220 104 V120 H0Z" fill="#e7c9a0" opacity=".7"/>
+      <g fill="#3b2417">
+        <circle cx="66" cy="272" r="11"/><circle cx="90" cy="276" r="11"/><circle cx="114" cy="274" r="11"/>
+        <circle cx="138" cy="276" r="11"/><circle cx="158" cy="270" r="10"/><circle cx="78" cy="252" r="11"/>
+        <circle cx="102" cy="254" r="11"/><circle cx="126" cy="252" r="11"/><circle cx="150" cy="250" r="10"/>
+        <circle cx="90" cy="232" r="10"/><circle cx="116" cy="232" r="11"/><circle cx="140" cy="230" r="10"/>
+      </g>
+    </g>
+    <path d="M34 60 H186 L166 286 H54 Z" fill="none" stroke="#2a1c12" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M28 60 H192" stroke="#2a1c12" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
