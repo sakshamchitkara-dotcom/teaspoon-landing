@@ -85,3 +85,15 @@ test("a missing page doesn't replace the offline copy", async ({ page }) => {
   const cached = await page.evaluate(async () => (await caches.match("./")).status);
   expect(cached).toBe(200);
 });
+
+test("404 page links home, keeps the disclaimer, and has no axe violations", async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
+    await page.emulateMedia({ colorScheme: theme });
+    await page.goto("./404.html");
+    await expect(page.locator("h1")).toHaveText("This cup is empty.");
+    await expect(page.getByRole("link", { name: "Go to the home page" })).toHaveAttribute("href", "/teaspoon-landing/");
+    await expect(page.locator("footer")).toContainText("not affiliated with or endorsed by Teaspoon");
+    const { violations } = await new AxeBuilder({ page }).analyze();
+    expect(violations.map((v) => v.id)).toEqual([]);
+  }
+});
