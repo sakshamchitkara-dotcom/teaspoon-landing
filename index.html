@@ -28,8 +28,13 @@
   <meta name="theme-color" content="#1f1812" media="(prefers-color-scheme: dark)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=DynaPuff:wght@500;700&family=Baloo+2:wght@600;800&family=Lexend:wght@400;700&display=swap">
+  <!-- Fonts load without blocking first paint; the fallback stacks in styles.css cover the gap. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=DynaPuff:wght@500;700&amp;family=Baloo+2:wght@600;800&amp;family=Lexend:wght@400;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=DynaPuff:wght@500;700&amp;family=Baloo+2:wght@600;800&amp;family=Lexend:wght@400;700&amp;display=swap"></noscript>
   <link rel="stylesheet" href="styles.css">
+  <link rel="modulepreload" href="app.js">
+  <link rel="modulepreload" href="data.js">
+  <link rel="modulepreload" href="i18n.js">
   <!-- Structured data. Concept design: street address, phone, hours, and prices are
        unknown placeholders, so they are left out rather than published as facts. -->
   <script type="application/ld+json">
