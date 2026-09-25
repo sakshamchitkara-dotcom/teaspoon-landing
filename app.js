@@ -5,7 +5,13 @@ import { STRINGS } from "./i18n.js";
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
-let lang = "en";
+// Saved choice, then the browser's languages, then English.
+function initialLang() {
+  let saved = null;
+  try { saved = localStorage.getItem("lang"); } catch (e) {}
+  return [saved, ...navigator.languages.map((l) => l.slice(0, 2).toLowerCase())].find((l) => l in STRINGS) || "en";
+}
+let lang = initialLang();
 const lookup = (obj, key) => key.split(".").reduce((o, k) => o?.[k], obj);
 // t("menu.showing", { n: 3 }) -> "Showing 3 items"; falls back to English, then the key.
 export function t(key, vars = {}) {
@@ -152,5 +158,17 @@ function render() {
   shopFacts();
 }
 
+// Language picker: rerenders every string in place and remembers the choice
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  $("#lang").value = l;
+  render();
+}
+$("#lang").addEventListener("change", (e) => {
+  try { localStorage.setItem("lang", e.target.value); } catch (err) {}
+  setLang(e.target.value);
+});
+
 theme();
-render();
+setLang(lang);
