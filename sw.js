@@ -1,7 +1,7 @@
 // Offline support. Pages go network-first so visitors see edits right away;
 // everything else is stale-while-revalidate, so it loads from cache and refreshes behind the scenes.
 // ponytail: a stale asset can survive one extra visit after a deploy; bump VERSION to force a clean cache.
-const VERSION = "teaspoon-v3";
+const VERSION = "teaspoon-v4";
 const SHELL = [
   "./", "app.js", "data.js", "i18n.js", "favicon.svg",
   "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png",
@@ -45,7 +45,9 @@ self.addEventListener("fetch", (e) => {
       if (res.ok || res.type === "opaque") cache.put(req, res.clone());
       return res;
     });
-    if (hit) { e.waitUntil(fresh.catch(() => {})); return hit; }
+    // An opaque copy (from a no-cors <link>) can't answer a CORS fetch of the same URL;
+    // the browser would fail that request, so only no-cors requests may reuse it.
+    if (hit && (hit.type !== "opaque" || req.mode === "no-cors")) { e.waitUntil(fresh.catch(() => {})); return hit; }
     return fresh;
   }));
 });
