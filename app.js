@@ -107,6 +107,11 @@ $("#info-toggle").addEventListener("click", (e) => {
   e.currentTarget.setAttribute("aria-pressed", on);
   $(".menu").classList.toggle("show-info", on);
 });
+// Printing always shows the full board, then puts the visitor's filter back
+let catBeforePrint = null;
+addEventListener("beforeprint", () => { catBeforePrint = menuCat; showMenu("all"); });
+addEventListener("afterprint", () => { if (catBeforePrint) showMenu(catBeforePrint); catBeforePrint = null; });
+$("#print-menu").addEventListener("click", () => print());
 function menu() {
   const filters = $(".filters");
   filters.innerHTML = CATEGORIES.map((c) =>
