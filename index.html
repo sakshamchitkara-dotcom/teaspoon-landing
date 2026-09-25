@@ -74,6 +74,22 @@
         <ul class="board"></ul>
       </div>
     </section>
+
+    <section id="build" class="section build" aria-labelledby="build-title">
+      <div class="wrap build__grid">
+        <div class="build__intro">
+          <h2 id="build-title">Build your drink</h2>
+          <p>Choose a base, then set sugar, ice, and toppings. The cup updates as you go, so you know what to ask for at the counter.</p>
+        </div>
+        <form class="builder" id="builder">
+          <!-- fieldsets are generated from BUILDER in data.js -->
+        </form>
+        <div class="preview">
+          <div class="preview__cup" id="preview-cup"></div>
+          <output class="preview__summary" for="builder" id="summary" aria-live="polite"></output>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script type="module" src="app.js"></script>
