@@ -159,3 +159,25 @@ test("a CORS fetch of a cached font stylesheet still works", async ({ page }) =>
   const ok = await page.evaluate((u) => fetch(u).then((r) => r.ok, () => false), href);
   expect(ok).toBe(true);
 });
+
+test("stamp card demo counts, remembers, fills up, and resets", async ({ page }) => {
+  await page.goto("./");
+  await expect(page.locator(".stamps")).toContainText("aren't worth anything");
+  await expect(page.locator("#stamp-status")).toHaveText("0 of 10 stamps");
+  for (let i = 0; i < 3; i++) await page.click("#stamp-add");
+  await page.reload();
+  await expect(page.locator("#stamp-status")).toHaveText("3 of 10 stamps");
+  await expect(page.locator("#stamp-grid .is-on")).toHaveCount(3);
+  for (let i = 0; i < 7; i++) await page.click("#stamp-add");
+  await expect(page.locator("#stamp-status")).toContainText("only a demo");
+  await expect(page.locator("#stamp-add")).toBeDisabled();
+  const { violations } = await new AxeBuilder({ page }).analyze();
+  expect(violations.map((v) => v.id)).toEqual([]);
+  await page.click("#stamp-reset");
+  await expect(page.locator("#stamp-status")).toHaveText("0 of 10 stamps");
+  await expect(page.locator("#stamp-add")).toBeFocused();
+  // junk in storage is clamped, not trusted
+  await page.evaluate(() => localStorage.setItem("stamps", "999"));
+  await page.reload();
+  await expect(page.locator("#stamp-grid .is-on")).toHaveCount(10);
+});

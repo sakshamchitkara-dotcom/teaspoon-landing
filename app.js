@@ -240,6 +240,23 @@ function gallery() {
     ${p.art || ""}${p.text ? `<span class="tile__text" aria-hidden="true">${p.text}</span>` : ""}</div></li>`).join("");
 }
 
+// Stamp card demo: a count in localStorage, nothing more. No rewards exist.
+export const STAMPS = 10;
+const clampStamps = (v) => Math.min(STAMPS, Math.max(0, Number.parseInt(v, 10) || 0));
+function getStamps() { try { return clampStamps(localStorage.getItem("stamps")); } catch (e) { return 0; } }
+function setStamps(n) {
+  try { localStorage.setItem("stamps", n); } catch (e) {}
+  stamps(n);
+}
+function stamps(n = getStamps()) {
+  $("#stamp-grid").innerHTML = Array.from({ length: STAMPS }, (_, i) => `<li class="${i < n ? "is-on" : ""}"></li>`).join("");
+  $("#stamp-status").textContent = n >= STAMPS ? t("stamps.full") : t("stamps.status", { n, total: STAMPS });
+  $("#stamp-add").disabled = n >= STAMPS;
+  $("#stamp-reset").hidden = n === 0;
+}
+$("#stamp-add").addEventListener("click", () => setStamps(getStamps() + 1));
+$("#stamp-reset").addEventListener("click", () => { setStamps(0); $("#stamp-add").focus(); });
+
 // Shop facts from the single config object
 function shopFacts() {
   document.querySelectorAll("[data-shop]").forEach((el) => { el.textContent = SHOP[el.dataset.shop]; });
@@ -270,6 +287,7 @@ function render() {
   builder();
   gallery();
   shopFacts();
+  stamps();
 }
 
 // Language picker: rerenders every string in place and remembers the choice
