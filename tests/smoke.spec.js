@@ -17,7 +17,7 @@ for (const [lang, heading] of [["en", "Build your drink"], ["es", "Arma tu bebid
       await page.goto("./");
       await expect(page.locator("html")).toHaveAttribute("lang", lang);
       await expect(page.locator("#build-title")).toHaveText(heading);
-      await expect(page.locator(".board li")).toHaveCount(14);
+      await expect(page.locator(".board > li")).toHaveCount(14);
       await expect(page.locator("#specials-list li").first()).toBeVisible();
       await expect(page.locator(".foot__note")).toContainText("Teaspoon");
       const { violations } = await new AxeBuilder({ page }).analyze();
@@ -96,4 +96,21 @@ test("404 page links home, keeps the disclaimer, and has no axe violations", asy
     const { violations } = await new AxeBuilder({ page }).analyze();
     expect(violations.map((v) => v.id)).toEqual([]);
   }
+});
+
+test("allergen toggle shows the sample notes", async ({ page }) => {
+  await page.goto("./");
+  const pudding = page.locator(".board > li", { hasText: "Egg pudding" }).locator(".info");
+  await expect(pudding).toBeHidden();
+  await page.click("#info-toggle");
+  await expect(page.locator("#info-toggle")).toHaveAttribute("aria-pressed", "true");
+  await expect(pudding).toHaveText(["Egg, Milk", "No caffeine", "[calories] calories"].join(""));
+  await expect(page.locator(".info-note")).toContainText("not checked against a real recipe");
+  // survives a category change and a language change
+  await page.click('.chip[data-cat="fruit"]');
+  await expect(page.locator(".board .info").first()).toContainText("No milk or egg");
+  await page.selectOption("#lang", "es");
+  await expect(page.locator(".board .info").first()).toContainText("Sin leche ni huevo");
+  const { violations } = await new AxeBuilder({ page }).analyze();
+  expect(violations.map((v) => v.id)).toEqual([]);
 });

@@ -18,23 +18,26 @@ export const SHOP = {
 
 // Sample menu for the concept. Not the shop's actual menu; no prices on purpose.
 // `tea` / `milk` are the colors used to draw each cup.
+// `contains` (milk, egg) and `caffeine` are sample notes shown by the allergen toggle,
+// inferred from the drink descriptions, not from a real recipe. Calories are left as a
+// placeholder: add `kcal: 180` to an item to show a number instead of [calories].
 export const CATEGORIES = ["all", "milk", "fruit", "special", "topping"];
 
 export const MENU = [
-  { id: "black", cat: "milk", tea: "#b98a5e" },
-  { id: "jasmine", cat: "milk", tea: "#d9cf9a" },
-  { id: "taro", cat: "milk", tea: "#b9a3d6" },
-  { id: "oolong", cat: "milk", tea: "#a87650" },
-  { id: "mango", cat: "fruit", tea: "#f2b54a" },
-  { id: "passion", cat: "fruit", tea: "#e8c24d" },
-  { id: "lychee", cat: "fruit", tea: "#ecd9b4" },
-  { id: "strawMatcha", cat: "special", tea: "#8fae5a", milk: "#f0a3a8" },
-  { id: "brownSugar", cat: "special", tea: "#f2e6d4", milk: "#7a4a24" },
-  { id: "seaSalt", cat: "special", tea: "#b58a5c", milk: "#f7f1e6" },
-  { id: "pearls", cat: "topping", tea: "#3b2417" },
-  { id: "jelly", cat: "topping", tea: "#efe4c8" },
-  { id: "pudding", cat: "topping", tea: "#f1c65a" },
-  { id: "crystal", cat: "topping", tea: "#e9e6de" },
+  { id: "black", cat: "milk", tea: "#b98a5e", contains: ["milk"], caffeine: true },
+  { id: "jasmine", cat: "milk", tea: "#d9cf9a", contains: ["milk"], caffeine: true },
+  { id: "taro", cat: "milk", tea: "#b9a3d6", contains: ["milk"], caffeine: true },
+  { id: "oolong", cat: "milk", tea: "#a87650", contains: ["milk"], caffeine: true },
+  { id: "mango", cat: "fruit", tea: "#f2b54a", contains: [], caffeine: true },
+  { id: "passion", cat: "fruit", tea: "#e8c24d", contains: [], caffeine: true },
+  { id: "lychee", cat: "fruit", tea: "#ecd9b4", contains: [], caffeine: true },
+  { id: "strawMatcha", cat: "special", tea: "#8fae5a", milk: "#f0a3a8", contains: ["milk"], caffeine: true },
+  { id: "brownSugar", cat: "special", tea: "#f2e6d4", milk: "#7a4a24", contains: ["milk"], caffeine: false },
+  { id: "seaSalt", cat: "special", tea: "#b58a5c", milk: "#f7f1e6", contains: ["milk"], caffeine: true },
+  { id: "pearls", cat: "topping", tea: "#3b2417", contains: [], caffeine: false },
+  { id: "jelly", cat: "topping", tea: "#efe4c8", contains: [], caffeine: false },
+  { id: "pudding", cat: "topping", tea: "#f1c65a", contains: ["egg", "milk"], caffeine: false },
+  { id: "crystal", cat: "topping", tea: "#e9e6de", contains: [], caffeine: false },
 ];
 
 // Options for the build-your-drink section. Labels live in i18n.js (build.*).

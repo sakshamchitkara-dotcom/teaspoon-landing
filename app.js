@@ -87,12 +87,26 @@ function showMenu(cat = menuCat) {
     const [name, note] = t(`menu.items.${d.id}`);
     return `<li>
       ${cup(d.cat === "topping" ? { tea: "var(--cup)", bits: [d.tea, d.tea], fill: 0 } : d)}
-      <div><h3>${esc(name)}</h3><p>${esc(note)}</p>${cat === "all" ? `<span class="tag">${esc(t(`menu.cats.${d.cat}`))}</span>` : ""}</div>
+      <div><h3>${esc(name)}</h3><p>${esc(note)}</p>${cat === "all" ? `<span class="tag">${esc(t(`menu.cats.${d.cat}`))}</span>` : ""}${info(d)}</div>
     </li>`;
   }).join("");
   $("#menu-status").textContent = cat === "all" ? t("menu.showing", { n: items.length }) : t("menu.showingCat", { n: items.length, cat: t(`menu.cats.${cat}`) });
   filters.querySelectorAll(".chip").forEach((b) => b.setAttribute("aria-pressed", b.dataset.cat === cat));
 }
+// Sample allergen / caffeine notes, hidden until the toggle is on (always shown in print)
+const info = (d) => {
+  const tags = [
+    d.contains.length ? d.contains.map((a) => t(`menu.info.allergens.${a}`)).join(", ") : t("menu.info.none"),
+    t(d.caffeine ? "menu.info.caffeine" : "menu.info.noCaffeine"),
+    t("menu.info.calories", { n: d.kcal ?? "[calories]" }),
+  ];
+  return `<ul class="info">${tags.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+};
+$("#info-toggle").addEventListener("click", (e) => {
+  const on = e.currentTarget.getAttribute("aria-pressed") !== "true";
+  e.currentTarget.setAttribute("aria-pressed", on);
+  $(".menu").classList.toggle("show-info", on);
+});
 function menu() {
   const filters = $(".filters");
   filters.innerHTML = CATEGORIES.map((c) =>
