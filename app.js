@@ -92,8 +92,8 @@ function gallery() {
     { bg: "var(--accent)", alt: "Mango green tea with crystal boba on a purple background", art: cup({ tea: "#f2b54a", bits: ["#e9e6de"], ice: 2 }) },
     { bg: "#e7c9a0", alt: "Brown sugar pearl milk with dark syrup streaks", art: cup({ tea: "#f2e6d4", milk: "#7a4a24", bits: ["#3b2417", "#3b2417"] }) },
   ];
-  $("#feed").innerHTML = posts.map((p) => `<li class="tile ${p.cls || ""}" style="--tile:${p.bg}" role="img" aria-label="${esc(p.alt)}">
-    ${p.art || ""}${p.text ? `<span class="tile__text" aria-hidden="true">${p.text}</span>` : ""}</li>`).join("");
+  $("#feed").innerHTML = posts.map((p) => `<li><div class="tile ${p.cls || ""}" style="--tile:${p.bg}" role="img" aria-label="${esc(p.alt)}">
+    ${p.art || ""}${p.text ? `<span class="tile__text" aria-hidden="true">${p.text}</span>` : ""}</div></li>`).join("");
 }
 
 // Shop facts from the single config object

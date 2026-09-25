@@ -246,3 +246,8 @@ a { color: var(--accent); text-underline-offset: .2em; }
   border: 2px solid var(--line); border-radius: var(--radius-pill); padding: .6em 1em; cursor: pointer; min-height: 44px;
 }
 .theme[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
