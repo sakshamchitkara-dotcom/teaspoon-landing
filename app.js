@@ -238,3 +238,8 @@ $("#lang").addEventListener("change", (e) => {
 
 theme();
 setLang(lang);
+
+// Offline support (see sw.js). Registered after load so it never competes with first paint.
+if ("serviceWorker" in navigator) {
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
