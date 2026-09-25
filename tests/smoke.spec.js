@@ -68,6 +68,8 @@ test("works offline after the first visit", async ({ page, context }) => {
   await page.goto("./");
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
+  // The worker caches fonts as they load; going offline before that finishes fails them.
+  await page.waitForLoadState("networkidle");
   await context.setOffline(true);
   await page.goto("./?base=mango&sweet=0&ice=2&top=crystal#build");
   await expect(page.locator("#summary")).toHaveText("Mango green 0% sweet, regular ice, with crystal boba.");
