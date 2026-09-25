@@ -130,3 +130,22 @@ test("print shows the whole menu with allergen notes and nothing else", async ({
   await page.evaluate(() => dispatchEvent(new Event("afterprint")));
   await expect(page.locator(".board > li")).toHaveCount(3);
 });
+
+test("quiz turns four answers into a drink the builder can open", async ({ page }) => {
+  await page.goto("./");
+  await expect(page.locator("#quiz-result")).toContainText("Answer all four");
+  await page.click("#quiz-form .btn"); // unanswered: native validation keeps the empty state
+  await expect(page.locator("#quiz-result")).toContainText("Answer all four");
+  for (const [q, a] of [["flavor", "creamy"], ["sweet", "low"], ["chew", "silky"], ["day", "cold"]]) {
+    await page.check(`#quiz-form input[name="${q}"][value="${a}"]`);
+  }
+  await page.click("#quiz-form .btn");
+  await expect(page.locator("#quiz-result .preview__summary")).toHaveText("Taro 25% sweet, no ice, with egg pudding.");
+  await page.selectOption("#lang", "es");
+  await expect(page.locator("#quiz-result .preview__summary")).toHaveText("Taro 25% de dulzura, sin hielo, con flan de huevo.");
+  const { violations } = await new AxeBuilder({ page }).analyze();
+  expect(violations.map((v) => v.id)).toEqual([]);
+  await page.click("#quiz-result a");
+  await expect(page).toHaveURL(/\?base=taro&sweet=25&ice=0&top=pudding#build$/);
+  await expect(page.locator("#summary")).toHaveText("Taro 25% de dulzura, sin hielo, con flan de huevo.");
+});

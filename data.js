@@ -67,3 +67,12 @@ export const SPECIALS = [
   { id: "persimmon", from: "10-15", to: "12-15", tea: "#f08a3c", ice: 1 },
   { id: "ginger", from: "12-01", to: "02-29", tea: "#f2e6d4", milk: "#7a4a24", bits: ["#3b2417"] },
 ];
+
+// "Find your drink" quiz. Each answer sets one part of a builder drink, so a result is
+// always something the builder (and a saved-drink link) can show. Labels live in i18n.js (quiz.*).
+export const QUIZ = {
+  flavor: { bold: "black", creamy: "taro", floral: "jasmine", fruity: "mango" }, // -> base
+  sweet: { low: 25, mid: 50, high: 75 }, // -> sweetness %
+  chew: { chewy: ["pearls"], silky: ["pudding"], bouncy: ["crystal"], none: [] }, // -> toppings
+  day: { hot: 2, mild: 1, cold: 0 }, // -> ice level
+};
