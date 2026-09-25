@@ -1,6 +1,6 @@
 // Renders the SVG sources to the PNGs that browsers and link previews need.
 // Run after editing any of the SVGs: npm run rasterize
-import { chromium } from "playwright";
+import { chromium } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
 const jobs = [
