@@ -311,12 +311,27 @@
     .chip--quiet { border-color: transparent; text-decoration: underline; }
 
     /* Gallery */
-    .feed { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(6px, 1vw, 14px); }
+    .carousel { margin-top: 2rem; }
+    .carousel__bar { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+    .carousel__status { margin: 0 auto 0 0; font-weight: 700; color: var(--ink-soft); }
+    .carousel__btn { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; }
+    .carousel__btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .carousel__btn:disabled { opacity: .35; cursor: default; }
+    .feed {
+      --gap: clamp(8px, 1.2vw, 16px);
+      list-style: none; padding: 0 0 12px; margin: 0; display: grid; gap: var(--gap);
+      grid-auto-flow: column; grid-auto-columns: calc((100% - 2 * var(--gap)) / 3);
+      overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain;
+      scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+    }
+    .feed > li { scroll-snap-align: start; }
+    .feed:focus-visible { outline-offset: 6px; }
     .tile { aspect-ratio: 1; background: var(--tile); border: 3px solid var(--line); border-radius: 18px; display: grid; place-items: center; overflow: hidden; }
     .tile svg { width: 62%; height: auto; }
     .tile--pearls { background: radial-gradient(circle at 35% 35%, #7a5a45 0 12%, transparent 13%) 0 0 / 22% 22%, radial-gradient(circle, #3b2417 0 46%, transparent 47%) 0 0 / 22% 22%, #1a100a; }
     .tile__text { font: 700 clamp(1.25rem, 4vw, 2.75rem)/1 var(--font-display); color: var(--ink); text-align: center; padding: 1rem; }
-    @media (max-width: 560px) { .feed { grid-template-columns: repeat(2, 1fr); } }
+    /* on phones one post and a peek of the next, so it reads as swipeable */
+    @media (max-width: 560px) { .feed { grid-auto-columns: 78%; } }
 
     /* FAQ */
     .faq { background: var(--surface); border-top: 3px solid var(--line); }
@@ -397,7 +412,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
+      html, .feed { scroll-behavior: auto; }
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
 
@@ -575,7 +590,16 @@
       <div class="wrap">
         <h2 id="gallery-title" data-i18n="gallery.title">From the feed</h2>
         <p data-i18n="gallery.intro">Illustrated posts in the style of our social feed. Follow along at [instagram handle].</p>
-        <ul class="feed" id="feed"></ul>
+        <!-- Carousel: a native scroll-snap row (swipe, trackpad, or arrow keys once focused),
+             plus buttons that move one post. No autoplay. -->
+        <div class="carousel" role="group" aria-roledescription="carousel" aria-labelledby="gallery-title">
+          <div class="carousel__bar">
+            <p class="carousel__status" id="feed-status" aria-live="polite"></p>
+            <button type="button" class="chip carousel__btn" id="feed-prev" aria-controls="feed"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10 3 5 8l5 5"/></svg><span class="visually-hidden" data-i18n="gallery.prev">Previous post</span></button>
+            <button type="button" class="chip carousel__btn" id="feed-next" aria-controls="feed"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m6 3 5 5-5 5"/></svg><span class="visually-hidden" data-i18n="gallery.next">Next post</span></button>
+          </div>
+          <ul class="feed" id="feed" tabindex="0" aria-label="Posts, scroll sideways for more" data-i18n-label="gallery.track"></ul>
+        </div>
       </div>
     </section>
 

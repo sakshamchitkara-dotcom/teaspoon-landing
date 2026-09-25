@@ -181,3 +181,25 @@ test("stamp card demo counts, remembers, fills up, and resets", async ({ page })
   await page.reload();
   await expect(page.locator("#stamp-grid .is-on")).toHaveCount(10);
 });
+
+test("gallery carousel moves one post at a time and reports where it is", async ({ page, isMobile }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" }); // instant scrolling keeps the checks simple
+  await page.goto("./");
+  const status = page.locator("#feed-status");
+  await expect(status).toHaveText(isMobile ? "Post 1 of 6" : "Posts 1 to 3 of 6");
+  await expect(page.locator("#feed-prev")).toBeDisabled();
+  await page.click("#feed-next");
+  await expect(status).toHaveText(isMobile ? "Post 2 of 6" : "Posts 2 to 4 of 6");
+  await expect(page.locator("#feed-prev")).toBeEnabled();
+  // keyboard: the focused track scrolls with the arrow keys and snaps to the next post
+  await page.focus("#feed");
+  await page.keyboard.press("ArrowRight");
+  await expect(status).toHaveText(isMobile ? "Post 3 of 6" : "Posts 3 to 5 of 6");
+  const last = isMobile ? 3 : 1;
+  for (let i = 0; i < last; i++) await page.click("#feed-next");
+  await expect(page.locator("#feed-next")).toBeDisabled();
+  await expect(status).toHaveText(isMobile ? "Post 6 of 6" : "Posts 4 to 6 of 6");
+  await expect(page.locator("#feed > li")).toHaveCount(6);
+  const { violations } = await new AxeBuilder({ page }).analyze();
+  expect(violations.map((v) => v.id)).toEqual([]);
+});
