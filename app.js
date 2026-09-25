@@ -49,4 +49,38 @@ function menu() {
   show("all");
 }
 
+// Build-your-drink: form state -> live cup + summary
+const MAX_TOPPINGS = 3;
+function builder() {
+  const form = $("#builder");
+  if (!form) return;
+  const opt = (type, name, value, text, checked, swatch) => `<label class="opt">
+    <input type="${type}" name="${name}" value="${esc(value)}"${checked ? " checked" : ""}>
+    <span>${swatch ? `<i class="swatch" style="background:${swatch}" aria-hidden="true"></i>` : ""}${esc(text)}</span></label>`;
+  const group = (legend, body, hint = "") =>
+    `<fieldset><legend>${legend}</legend><div class="options">${body}</div>${hint}</fieldset>`;
+  form.innerHTML =
+    group("Base", BUILDER.bases.map((b, i) => opt("radio", "base", b.id, b.label, i === 0, b.tea)).join("")) +
+    group("Sweetness", BUILDER.sweetness.map((v) => opt("radio", "sweet", v, `${v}%`, v === 50)).join("")) +
+    group("Ice", BUILDER.ice.map((v, i) => opt("radio", "ice", i, v, i === 1)).join("")) +
+    group("Toppings", BUILDER.toppings.map((t) => opt("checkbox", "top", t.id, t.label, t.id === "pearls", t.color)).join(""),
+      `<p class="hint" id="top-hint">Up to ${MAX_TOPPINGS}.</p>`);
+
+  const render = () => {
+    const f = new FormData(form);
+    const base = BUILDER.bases.find((b) => b.id === f.get("base"));
+    const sweet = Number(f.get("sweet"));
+    const ice = Number(f.get("ice"));
+    const tops = BUILDER.toppings.filter((t) => f.getAll("top").includes(t.id));
+    form.querySelectorAll('input[name="top"]').forEach((i) => { i.disabled = !i.checked && tops.length >= MAX_TOPPINGS; });
+    $("#preview-cup").innerHTML = cup({ tea: base.tea, ice, sweet, bits: tops.map((t) => t.color), fill: 0.82 });
+    const list = tops.map((t) => t.label.toLowerCase());
+    const withText = list.length ? `with ${list.length > 1 ? list.slice(0, -1).join(", ") + " and " + list.at(-1) : list[0]}` : "no toppings";
+    $("#summary").innerHTML = `<strong>${esc(base.label)}</strong>${sweet}% sweet, ${BUILDER.ice[ice].toLowerCase()}, ${esc(withText)}.`;
+  };
+  form.addEventListener("change", render);
+  render();
+}
+
 menu();
+builder();
