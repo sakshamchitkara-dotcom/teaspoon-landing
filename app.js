@@ -1,5 +1,5 @@
 // Teaspoon concept page. Facts come from data.js, words from i18n.js.
-import { SHOP, CATEGORIES, MENU, BUILDER } from "./data.js";
+import { SHOP, CATEGORIES, MENU, BUILDER, SPECIALS } from "./data.js";
 import { STRINGS } from "./i18n.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -52,6 +52,29 @@ function staticText() {
   document.querySelectorAll("[data-i18n-label]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nLabel)); });
   document.title = t("meta.title");
   $('meta[name="description"]').content = t("meta.description");
+}
+
+// Seasonal specials: what's pouring on `date`, plus the next one to start
+export function specialsOn(date, list = SPECIALS) {
+  const pad = (n) => String(n).padStart(2, "0");
+  const today = `${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  const on = (s) => (s.from <= s.to ? today >= s.from && today <= s.to : today >= s.from || today <= s.to);
+  // "0" sorts starts later this year ahead of ones that already passed (next year)
+  const soon = (s) => (s.from > today ? "0" : "1") + s.from;
+  const next = list.filter((s) => !on(s)).sort((a, b) => soon(a).localeCompare(soon(b)))[0];
+  return { now: list.filter(on), next };
+}
+function specials(date = new Date()) {
+  const { now, next } = specialsOn(date);
+  const day = new Intl.DateTimeFormat(lang, { month: "long", day: "numeric" });
+  const fmt = (md) => day.format(new Date(2000, Number(md.slice(0, 2)) - 1, Number(md.slice(3))));
+  const item = (s, when, cls = "") => {
+    const [name, note] = t(`specials.items.${s.id}`);
+    return `<li class="${cls}">${cup({ fill: 0.82, ...s })}<div><h3>${esc(name)}</h3><p>${esc(note)}</p><p class="when">${esc(when)}</p></div></li>`;
+  };
+  $("#specials-list").innerHTML =
+    now.map((s) => item(s, t("specials.now", { from: fmt(s.from), to: fmt(s.to) }))).join("") +
+    (next ? item(next, t("specials.next", { date: fmt(next.from) }), "is-next") : "");
 }
 
 // Menu board with category filter
@@ -194,6 +217,7 @@ function theme() {
 // Everything that holds words; rerun when the language changes.
 function render() {
   staticText();
+  specials();
   menu();
   builder();
   gallery();

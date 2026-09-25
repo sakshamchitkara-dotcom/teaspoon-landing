@@ -54,3 +54,13 @@ export const BUILDER = {
     { id: "crystal", color: "#e9e6de" },
   ],
 };
+
+// Seasonal specials repeat every year. `from` / `to` are "MM-DD", both inclusive,
+// and a range may wrap past New Year. Sample drinks for the concept, like MENU.
+export const SPECIALS = [
+  { id: "strawberry", from: "03-01", to: "05-31", tea: "#f3a6ae" },
+  { id: "watermelon", from: "06-01", to: "08-31", tea: "#f0707a", ice: 2 },
+  { id: "horchata", from: "09-01", to: "11-30", tea: "#b98a5e", milk: "#eadcc4", bits: ["#3b2417"] },
+  { id: "persimmon", from: "10-15", to: "12-15", tea: "#f08a3c", ice: 1 },
+  { id: "ginger", from: "12-01", to: "02-29", tea: "#f2e6d4", milk: "#7a4a24", bits: ["#3b2417"] },
+];

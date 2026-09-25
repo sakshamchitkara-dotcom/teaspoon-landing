@@ -64,6 +64,19 @@ export const STRINGS = {
       copied: "Link copied. Open it any time to get this drink back.",
       copyFail: "Copy didn't work. Select the link and copy it yourself.",
     },
+    specials: {
+      title: "In season",
+      intro: "Sample seasonal drinks for this concept. The list changes with the calendar.",
+      now: "Pouring {from} to {to}",
+      next: "Starts {date}",
+      items: {
+        strawberry: ["Strawberry jasmine", "Fresh strawberries muddled into jasmine green tea."],
+        watermelon: ["Watermelon mint slush", "Blended watermelon, mint, and ice. No tea, all summer."],
+        horchata: ["Horchata milk tea", "Cinnamon rice milk poured over black tea."],
+        persimmon: ["Persimmon oolong", "Ripe persimmon shaken with roasted oolong."],
+        ginger: ["Hot ginger brown sugar milk", "Warm milk, brown sugar syrup, and fresh ginger for rainy evenings."],
+      },
+    },
     about: {
       title: "A South Bay tea break",
       big: "San Jose runs on long commutes, late study sessions, and weekend errands. A good cup of tea should fit into all of them.",
@@ -170,6 +183,19 @@ export const STRINGS = {
       copied: "Enlace copiado. Ábrelo cuando quieras para recuperar esta bebida.",
       copyFail: "No se pudo copiar. Selecciona el enlace y cópialo a mano.",
     },
+    specials: {
+      title: "De temporada",
+      intro: "Bebidas de temporada de muestra para este concepto. La lista cambia con el calendario.",
+      now: "Del {from} al {to}",
+      next: "Empieza el {date}",
+      items: {
+        strawberry: ["Jazmín con fresa", "Fresas frescas machacadas en té verde de jazmín."],
+        watermelon: ["Granizado de sandía y menta", "Sandía, menta y hielo licuados. Sin té, puro verano."],
+        horchata: ["Té con leche de horchata", "Horchata de arroz con canela sobre té negro."],
+        persimmon: ["Oolong de caqui", "Caqui maduro agitado con oolong tostado."],
+        ginger: ["Leche caliente con jengibre y azúcar morena", "Leche tibia, jarabe de azúcar morena y jengibre fresco para las tardes de lluvia."],
+      },
+    },
     about: {
       title: "Un descanso con té en el South Bay",
       big: "San José vive de trayectos largos, noches de estudio y mandados de fin de semana. Un buen té debería caber en todos.",
@@ -275,6 +301,19 @@ export const STRINGS = {
       copy: "Sao chép đường dẫn",
       copied: "Đã sao chép đường dẫn. Mở lại bất cứ lúc nào để có lại ly này.",
       copyFail: "Không sao chép được. Hãy chọn đường dẫn và tự sao chép.",
+    },
+    specials: {
+      title: "Theo mùa",
+      intro: "Đồ uống theo mùa mẫu cho bản ý tưởng này. Danh sách đổi theo lịch.",
+      now: "Từ {from} đến {to}",
+      next: "Bắt đầu từ {date}",
+      items: {
+        strawberry: ["Trà lài dâu", "Dâu tươi dầm trong trà xanh lài."],
+        watermelon: ["Dưa hấu bạc hà đá xay", "Dưa hấu, bạc hà và đá xay. Không trà, toàn vị mùa hè."],
+        horchata: ["Trà sữa horchata", "Sữa gạo quế horchata trên nền trà đen."],
+        persimmon: ["Ô long hồng", "Hồng chín lắc cùng ô long rang."],
+        ginger: ["Sữa nóng gừng đường đen", "Sữa ấm, siro đường đen và gừng tươi cho những chiều mưa."],
+      },
     },
     about: {
       title: "Giờ nghỉ uống trà ở South Bay",
