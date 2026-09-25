@@ -86,7 +86,26 @@ function readDrink() {
   const f = new FormData(form);
   return { base: f.get("base"), sweet: Number(f.get("sweet")), ice: Number(f.get("ice")), top: f.getAll("top") };
 }
-function builder(drink = form.elements.length ? readDrink() : DEFAULT_DRINK) {
+// Shareable drink link: ?base=taro&sweet=25&ice=0&top=pearls,jelly#build
+// Anything unknown in the URL falls back to the default, so a hand-edited link can't break the builder.
+export function drinkFromQuery(search) {
+  const q = new URLSearchParams(search);
+  if (!q.has("base")) return null;
+  const pick = (list, v, fallback) => (list.includes(v) ? v : fallback);
+  const tops = new Set((q.get("top") || "").split(","));
+  return {
+    base: pick(BUILDER.bases.map((b) => b.id), q.get("base"), DEFAULT_DRINK.base),
+    sweet: pick(BUILDER.sweetness, Number(q.get("sweet")), DEFAULT_DRINK.sweet),
+    ice: pick(BUILDER.ice, Number(q.get("ice")), DEFAULT_DRINK.ice),
+    top: BUILDER.toppings.map((tp) => tp.id).filter((id) => tops.has(id)).slice(0, MAX_TOPPINGS),
+  };
+}
+const drinkUrl = (d) => {
+  // ids are plain [a-z] words, so the commas can stay readable instead of %2C
+  const q = `base=${d.base}&sweet=${d.sweet}&ice=${d.ice}&top=${d.top.join(",")}`;
+  return `${location.origin}${location.pathname}?${q}#build`;
+};
+function builder(drink = form.elements.length ? readDrink() : drinkFromQuery(location.search) || DEFAULT_DRINK) {
   const opt = (type, name, value, text, checked, swatch) => `<label class="opt">
     <input type="${type}" name="${name}" value="${esc(value)}"${checked ? " checked" : ""}>
     <span>${swatch ? `<i class="swatch" style="background:${swatch}" aria-hidden="true"></i>` : ""}${esc(text)}</span></label>`;
@@ -98,6 +117,7 @@ function builder(drink = form.elements.length ? readDrink() : DEFAULT_DRINK) {
     group(t("build.ice"), BUILDER.ice.map((v) => opt("radio", "ice", v, t(`build.iceLevels.${v}`), v === drink.ice)).join("")) +
     group(t("build.toppings"), BUILDER.toppings.map((tp) => opt("checkbox", "top", tp.id, t(`build.tops.${tp.id}`), drink.top.includes(tp.id), tp.color)).join(""),
       `<p class="hint" id="top-hint">${esc(t("build.hint", { n: MAX_TOPPINGS }))}</p>`);
+  $("#save-status").textContent = "";
   renderDrink();
 }
 function renderDrink() {
@@ -111,7 +131,29 @@ function renderDrink() {
   const joined = list.length > 1 ? `${list.slice(0, -1).join(", ")} ${t("build.and")} ${list.at(-1)}` : list[0];
   const text = t("build.summary", { sweet: d.sweet, ice: lower(t(`build.iceLevels.${d.ice}`)), tops: list.length ? t("build.with", { list: joined }) : t("build.none") });
   $("#summary").innerHTML = `<strong>${esc(t(`build.bases.${base.id}`))}</strong> ${esc(text)}`;
+  if (!$("#save-link").hidden) syncSaved();
 }
+// Once saved, the address bar and link field follow every change
+function syncSaved() {
+  const url = drinkUrl(readDrink());
+  history.replaceState(null, "", url);
+  $("#share-url").value = url;
+}
+$("#save").addEventListener("click", () => {
+  $("#save-link").hidden = false;
+  syncSaved();
+  $("#save-status").textContent = t("build.saved");
+});
+$("#copy").addEventListener("click", async () => {
+  const input = $("#share-url");
+  try {
+    await navigator.clipboard.writeText(input.value);
+    $("#save-status").textContent = t("build.copied");
+  } catch (e) {
+    input.select();
+    $("#save-status").textContent = t("build.copyFail");
+  }
+});
 form.addEventListener("change", renderDrink);
 
 // Gallery: illustrated "posts", no photos

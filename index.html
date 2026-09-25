@@ -95,6 +95,15 @@
         <form class="builder" id="builder">
           <!-- fieldsets are generated from BUILDER in data.js -->
         </form>
+        <div class="save">
+          <button type="button" class="btn" id="save" data-i18n="build.save">Save my drink</button>
+          <div class="save__link" id="save-link" hidden>
+            <label for="share-url" class="visually-hidden" data-i18n="build.link">Link to this drink</label>
+            <input id="share-url" type="url" readonly>
+            <button type="button" class="chip" id="copy" data-i18n="build.copy">Copy link</button>
+          </div>
+          <p class="save__status" role="status" id="save-status"></p>
+        </div>
         <div class="preview">
           <div class="preview__cup" id="preview-cup"></div>
           <output class="preview__summary" for="builder" id="summary" aria-live="polite"></output>
