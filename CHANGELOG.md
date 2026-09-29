@@ -2,6 +2,15 @@
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+- The smoke tests also run in Firefox, desktop WebKit, and an iPhone 13 WebKit profile, locally and in CI.
+
+### Changed
+- Tests ignore console errors from Google Fonts downloads that fail or are cut off by a navigation (Firefox logs these; they are network noise, not page errors).
+- The offline test is skipped in WebKit: Playwright's offline mode there blocks navigations before the service worker sees them.
+
 ## [0.3.0] - 2026-09-25
 
 ### Added
